@@ -1,0 +1,30 @@
+version: "3.8"
+
+services:
+  databse:
+    image: mysql
+    container_name: unsolvedwa-db
+    environment:
+      - MYSQL_DATABASE={DB_NAME}
+      - MYSQL_ROOT_HOST=%
+      - MYSQL_ROOT_PASSWORD={DB_PASSWORD}
+    command: mysqld --charater-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    ports:
+      - '${DB_PORT:-2345}:3306'
+    volumes:
+      - ./db:/var/lib/mysql
+
+  application:
+    build: .
+    restart: alwawys
+    depends_on:
+      - database
+    ports:
+      - ${API_EXTERNAL_PORT:-8080}:$}:{PORT:-8080}
+    env_file:
+      - ./config/.env
+    environment:
+      SPRING_DATASOURCE_URL: udbc:mysql:
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: {DB_PASSWORD}
+
