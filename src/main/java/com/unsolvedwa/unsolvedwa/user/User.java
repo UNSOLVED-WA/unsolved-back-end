@@ -31,12 +31,12 @@ public class User extends BaserTimeEntity {
     @JoinColumn(name = "ranking_id")
     private List<Ranking> rankings;
 
-    public void setBasucInfoUser(String bojId, Boolean isMember) {
+    public void setBasicInfoUser(String bojId, Boolean isMember) {
         this.bojId = bojId;
         this.isMember = true;
     }
 
-    public void addSovlingInfo(Long score) {
+    public void addSolvingInfo(Long score) {
         this.score += score;
         this.solvingCount++;
     }
