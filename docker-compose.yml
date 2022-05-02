@@ -28,7 +28,7 @@ services:
     links:
       - database
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:mysql://database:3306/${DB_NAME}?useSSL=false
+      - SPRING_DATASOURCE_URL=jdbc:mysql://database:3306/${DB_NAME}?useSSL=false&allowPublicKeyRetrieval=true
       - SPRING_DATASOURCE_USERNAME=root
       - SPRING_DATASOURCE_PASSWORD=${DB_PASSWORD}
       - SPRING_PROFILES_ACTIVE=${PROFILE}
