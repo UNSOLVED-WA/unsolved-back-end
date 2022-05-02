@@ -2,7 +2,7 @@
   
 <h1 align="center">
   <a href="https://docusaurus.io">
-    <img width="50%" src="https://user-images.githubusercontent.com/67993856/166102839-8832ae1a-f09a-4866-a936-3d451b84a3e7.png" />
+    <img width="20%" src="https://user-images.githubusercontent.com/67993856/166102839-8832ae1a-f09a-4866-a936-3d451b84a3e7.png" />
   </a>
 </h1>
   
