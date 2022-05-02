@@ -1,30 +1,39 @@
 version: "3.8"
 
 services:
-  databse:
+  database:
     image: mysql
+    cap_add:
+      - SYS_NICE
     container_name: unsolvedwa-db
     environment:
-      - MYSQL_DATABASE={DB_NAME}
+      - MYSQL_DATABASE=${DB_NAME}
       - MYSQL_ROOT_HOST=%
-      - MYSQL_ROOT_PASSWORD={DB_PASSWORD}
-    command: mysqld --charater-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     ports:
-      - '${DB_PORT:-2345}:3306'
+      - '${DB_PORT:-3306}:3306'
     volumes:
       - ./db:/var/lib/mysql
+    networks:
+      - network_1
 
   application:
     build: .
-    restart: alwawys
+    restart: always
     depends_on:
       - database
     ports:
-      - ${API_EXTERNAL_PORT:-8080}:$}:{PORT:-8080}
-    env_file:
-      - ./config/.env
+      - ${API_EXTERNAL_PORT:-8080}:${PORT:-8080}
+    links:
+      - database
     environment:
-      SPRING_DATASOURCE_URL: udbc:mysql:
-      SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: {DB_PASSWORD}
+      - SPRING_DATASOURCE_URL=jdbc:mysql://database:3306/${DB_NAME}?useSSL=false
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=${DB_PASSWORD}
+      - SPRING_PROFILES_ACTIVE=${PROFILE}
+    networks:
+      - network_1
 
+networks:
+  network_1:

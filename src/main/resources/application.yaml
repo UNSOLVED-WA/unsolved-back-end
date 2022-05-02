@@ -1,2 +1,13 @@
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    generate-ddl: false
+  datasource:
+    url: jdbc:mysql://database:2345/unsolved_wa?useSSL=false
+    username: root
+    password: 1234
+
 sample:
   value: default

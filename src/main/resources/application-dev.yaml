@@ -2,5 +2,6 @@ spring:
   config:
     activate:
       on-profile: dev
+
 sample:
   value: dev
