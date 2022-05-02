@@ -1,16 +1,15 @@
 package com.unsolvedwa.unsolvedwa.problem;
 
-import com.unsolvedwa.unsolvedwa.BaserTimeEntity;
+import com.unsolvedwa.unsolvedwa.BaseTimeEntity;
 import com.unsolvedwa.unsolvedwa.user.User;
 import lombok.Getter;
-import org.apache.tomcat.jni.Local;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
 @Getter
-public class Problem extends BaserTimeEntity {
+public class Problem extends BaseTimeEntity {
     @Id @GeneratedValue
     @Column(name = "problem_id")
     private Long id;

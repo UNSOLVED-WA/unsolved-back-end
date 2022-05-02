@@ -1,17 +1,16 @@
 package com.unsolvedwa.unsolvedwa.user;
 
-import com.unsolvedwa.unsolvedwa.BaserTimeEntity;
+import com.unsolvedwa.unsolvedwa.BaseTimeEntity;
 import com.unsolvedwa.unsolvedwa.problem.Problem;
 import com.unsolvedwa.unsolvedwa.ranking.Ranking;
 import lombok.Getter;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
 @Getter
-public class User extends BaserTimeEntity {
+public class User extends BaseTimeEntity {
     @Id @GeneratedValue
     @Column(name = "user_id")
     private Long id;
