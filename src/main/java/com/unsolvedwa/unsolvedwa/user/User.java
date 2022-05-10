@@ -4,8 +4,11 @@ import com.unsolvedwa.unsolvedwa.BaseTimeEntity;
 import com.unsolvedwa.unsolvedwa.problem.Problem;
 import com.unsolvedwa.unsolvedwa.ranking.Ranking;
 import lombok.Getter;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -16,8 +19,6 @@ public class User extends BaseTimeEntity {
     private Long id;
 
     private String bojId;
-
-    private Boolean isMember;
 
     private Long solvingCount;
 
@@ -32,7 +33,6 @@ public class User extends BaseTimeEntity {
 
     public void setBasicInfoUser(String bojId, Boolean isMember) {
         this.bojId = bojId;
-        this.isMember = true;
     }
 
     public void addSolvingInfo(Long score) {
