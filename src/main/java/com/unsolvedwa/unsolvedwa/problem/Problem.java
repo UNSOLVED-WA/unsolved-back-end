@@ -3,6 +3,8 @@ package com.unsolvedwa.unsolvedwa.problem;
 import com.unsolvedwa.unsolvedwa.BaseTimeEntity;
 import com.unsolvedwa.unsolvedwa.user.User;
 import lombok.Getter;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -18,12 +20,6 @@ public class Problem extends BaseTimeEntity {
 
     private Long tier;
 
-    private Boolean isSovled;
-
-    private Long score;
-
-    private LocalDateTime sovledAt;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
@@ -34,10 +30,7 @@ public class Problem extends BaseTimeEntity {
     }
 
     public void addSolvingInfo(Long score, User user) {
-        this.score = score;
         this.user = user;
         user.getProblems().add(this);
-        this.sovledAt = LocalDateTime.now();
-        this.isSovled = true;
     }
 }
