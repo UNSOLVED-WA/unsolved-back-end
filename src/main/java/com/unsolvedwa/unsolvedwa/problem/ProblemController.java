@@ -19,7 +19,7 @@ public class ProblemController {
 
     @Operation(description = "문제조회")
     @GetMapping(value = "/{id}")
-    public ResponseEntity<Problem> getProblem(@Parameter @PathVariable String id) {
+    public ResponseEntity<Problem> getProblem(@Parameter @PathVariable Long id) {
         return ResponseEntity.ok(problemService.findByProblemId(id));
     }
 }
