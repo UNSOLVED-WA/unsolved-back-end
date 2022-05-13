@@ -8,7 +8,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 @RequiredArgsConstructor
 public class ProblemService {
-
 	private final ProblemRepository problemRepository;
 
 	@Transactional(readOnly = true)
