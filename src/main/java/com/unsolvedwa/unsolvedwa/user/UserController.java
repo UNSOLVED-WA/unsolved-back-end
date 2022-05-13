@@ -1,4 +1,4 @@
-package com.unsolvedwa.unsolvedwa.problem;
+package com.unsolvedwa.unsolvedwa.user;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -11,15 +11,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@Tag(name = "ProblemController")
-@RequestMapping("/problem")
+@Tag(name = "UserController")
+@RequestMapping("/user")
 @RequiredArgsConstructor
-public class ProblemController {
-    private final ProblemService problemService;
+public class UserController {
+    private final UserService userService;
 
-    @Operation(description = "문제조회")
+    @Operation(description = "유저조회")
     @GetMapping(value = "/{id}")
-    public ResponseEntity<Problem> getProblem(@Parameter @PathVariable Long id) {
-        return ResponseEntity.ok(problemService.findByProblemId(id));
+    public ResponseEntity<User> getUser(@Parameter @PathVariable Long id) {
+        return ResponseEntity.ok(userService.findByUserId(id));
     }
 }
