@@ -1,11 +1,15 @@
 package com.unsolvedwa.unsolvedwa.problem;
 
 import com.unsolvedwa.unsolvedwa.BaseTimeEntity;
+import com.unsolvedwa.unsolvedwa.group.ProblemGroup;
 import com.unsolvedwa.unsolvedwa.user.User;
 import lombok.Getter;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Getter
@@ -18,26 +22,11 @@ public class Problem extends BaseTimeEntity {
 
     private Long tier;
 
-    private Boolean isSovled;
-
-    private Long score;
-
-    private LocalDateTime sovledAt;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
+    @OneToMany(mappedBy = "problem", cascade = CascadeType.ALL)
+    private List<ProblemGroup> problemGroups;
 
     public void setBasicInfo(String title, Long tier) {
         this.title = title;
         this.tier = tier;
-    }
-
-    public void addSolvingInfo(Long score, User user) {
-        this.score = score;
-        this.user = user;
-        user.getProblems().add(this);
-        this.sovledAt = LocalDateTime.now();
-        this.isSovled = true;
     }
 }
