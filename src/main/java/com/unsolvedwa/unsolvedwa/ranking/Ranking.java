@@ -1,7 +1,7 @@
 package com.unsolvedwa.unsolvedwa.ranking;
 
 import com.unsolvedwa.unsolvedwa.BaseTimeEntity;
-import com.unsolvedwa.unsolvedwa.group.Group;
+import com.unsolvedwa.unsolvedwa.team.Team;
 import com.unsolvedwa.unsolvedwa.user.User;
 import lombok.Getter;
 
@@ -24,7 +24,7 @@ public class Ranking extends BaseTimeEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "group_id")
-    private Group group;
+    private Team group;
 
     public void increaseScore(Long score) {
         this.score += score;

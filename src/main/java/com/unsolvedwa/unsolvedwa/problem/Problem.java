@@ -1,14 +1,10 @@
 package com.unsolvedwa.unsolvedwa.problem;
 
 import com.unsolvedwa.unsolvedwa.BaseTimeEntity;
-import com.unsolvedwa.unsolvedwa.group.ProblemGroup;
-import com.unsolvedwa.unsolvedwa.user.User;
+import com.unsolvedwa.unsolvedwa.team.ProblemTeam;
 import lombok.Getter;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -23,7 +19,7 @@ public class Problem extends BaseTimeEntity {
     private Long tier;
 
     @OneToMany(mappedBy = "problem", cascade = CascadeType.ALL)
-    private List<ProblemGroup> problemGroups;
+    private List<ProblemTeam> problemTeams;
 
     public void setBasicInfo(String title, Long tier) {
         this.title = title;
