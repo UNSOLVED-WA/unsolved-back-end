@@ -1,4 +1,4 @@
-package com.unsolvedwa.unsolvedwa.group;
+package com.unsolvedwa.unsolvedwa.team;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -11,15 +11,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@Tag(name= "GroupController")
-@RequestMapping("/group")
+@Tag(name= "TeamController")
+@RequestMapping("/team")
 @RequiredArgsConstructor
-public class GroupController {
-    private final GroupService groupService;
+public class TeamController {
+    private final TeamService teamService;
 
-    @Operation(description = "그룹조회")
+    @Operation(description = "팀조회")
     @GetMapping(value = "/{id}")
-    public ResponseEntity<Group> getGroup(@Parameter @PathVariable Long id) {
-        return ResponseEntity.ok(groupService.findByGroupId(id));
+    public ResponseEntity<Team> getTeam(@Parameter @PathVariable Long id) {
+        return ResponseEntity.ok(teamService.findByTeamId(id));
     }
 }
