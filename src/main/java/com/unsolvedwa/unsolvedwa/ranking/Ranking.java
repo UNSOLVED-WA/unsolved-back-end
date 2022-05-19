@@ -23,8 +23,8 @@ public class Ranking extends BaseTimeEntity {
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "group_id")
-    private Team group;
+    @JoinColumn(name = "team_id")
+    private Team team;
 
     public void increaseScore(Long score) {
         this.score += score;
