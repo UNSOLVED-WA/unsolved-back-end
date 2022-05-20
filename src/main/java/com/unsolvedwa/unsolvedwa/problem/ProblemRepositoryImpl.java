@@ -12,9 +12,4 @@ public class ProblemRepositoryImpl implements ProblemRepositoryCustom{
 
     private final JPAQueryFactory queryFactory;
 
-    @Override
-    public List<Problem> findUnsolvedByTeamId(Long teamId){
-        return queryFactory.from(problem)
-                .join()
-    }
 }
