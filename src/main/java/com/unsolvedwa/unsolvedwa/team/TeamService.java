@@ -1,17 +1,17 @@
-package com.unsolvedwa.unsolvedwa.group;
+package com.unsolvedwa.unsolvedwa.team;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Service("groupService")
+@Service("TeamService")
 @Transactional
 @RequiredArgsConstructor
-public class GroupService {
-    private final GroupRepository groupRepository;
+public class TeamService {
+    private final TeamRepository teamRepository;
 
     @Transactional(readOnly = true)
-    Group findByGroupId(Long id) {
-        return groupRepository.findById(id).get();
+    Team findByTeamId(Long id) {
+        return teamRepository.findById(id).get();
     }
 }

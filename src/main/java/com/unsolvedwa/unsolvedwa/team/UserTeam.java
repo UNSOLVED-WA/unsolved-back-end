@@ -1,4 +1,4 @@
-package com.unsolvedwa.unsolvedwa.group;
+package com.unsolvedwa.unsolvedwa.team;
 
 import com.unsolvedwa.unsolvedwa.BaseTimeEntity;
 import com.unsolvedwa.unsolvedwa.user.User;
@@ -8,14 +8,14 @@ import javax.persistence.*;
 
 @Entity
 @Getter
-public class UserGroup extends BaseTimeEntity {
+public class UserTeam extends BaseTimeEntity {
     @Id @GeneratedValue
-    @Column(name = "user_group_id")
+    @Column(name = "user_team_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "group_id")
-    private Group group;
+    @JoinColumn(name = "team_id")
+    private Team team;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
