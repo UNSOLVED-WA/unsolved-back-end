@@ -1,14 +1,12 @@
 package com.unsolvedwa.unsolvedwa.user;
 
+import com.unsolvedwa.unsolvedwa.user.dto.SolvingResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @Tag(name = "UserController")
@@ -21,5 +19,11 @@ public class UserController {
     @GetMapping(value = "/{id}")
     public ResponseEntity<User> getUser(@Parameter @PathVariable Long id) {
         return ResponseEntity.ok(userService.findByUserId(id));
+    }
+
+    @Operation(description = "특정 문제 품")
+    @PostMapping(value = "/solving")
+    public ResponseEntity<SolvingResponseDto> postSolving(@Parameter Long user_id, @Parameter Long boj_id) {
+        return ResponseEntity.ok(new SolvingResponseDto(userService.solvingProblem(user_id, boj_id)));
     }
 }
