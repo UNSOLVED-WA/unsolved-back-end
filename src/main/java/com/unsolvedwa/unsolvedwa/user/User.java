@@ -2,6 +2,7 @@ package com.unsolvedwa.unsolvedwa.user;
 
 import com.unsolvedwa.unsolvedwa.BaseTimeEntity;
 import com.unsolvedwa.unsolvedwa.team.ProblemTeam;
+import com.unsolvedwa.unsolvedwa.team.Team;
 import com.unsolvedwa.unsolvedwa.team.UserTeam;
 import com.unsolvedwa.unsolvedwa.ranking.Ranking;
 import lombok.Getter;
@@ -20,8 +21,6 @@ public class User extends BaseTimeEntity {
 
     private Long solvingCount;
 
-    private Long score;
-
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<ProblemTeam> problemTeams;
 
@@ -31,12 +30,7 @@ public class User extends BaseTimeEntity {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<UserTeam> userTeams;
 
-    public void setBasicInfoUser(String bojId, Boolean isMember) {
+    public void setBasicInfoUser(String bojId) {
         this.bojId = bojId;
-    }
-
-    public void addSolvingInfo(Long score) {
-        this.score += score;
-        this.solvingCount++;
     }
 }
