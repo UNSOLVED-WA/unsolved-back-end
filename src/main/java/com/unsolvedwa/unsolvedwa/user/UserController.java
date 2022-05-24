@@ -1,12 +1,14 @@
 package com.unsolvedwa.unsolvedwa.user;
 
-import com.unsolvedwa.unsolvedwa.user.dto.SolvingResponseDto;
+import com.unsolvedwa.unsolvedwa.user.dto.ScoreDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @Tag(name = "UserController")
@@ -23,7 +25,7 @@ public class UserController {
 
     @Operation(description = "특정 문제 품")
     @PostMapping(value = "/solving")
-    public ResponseEntity<SolvingResponseDto> postSolving(@Parameter Long user_id, @Parameter Long boj_id) {
-        return ResponseEntity.ok(new SolvingResponseDto(userService.solvingProblem(user_id, boj_id)));
+    public ResponseEntity<List<ScoreDto>> postSolving(@Parameter Long user_id, @Parameter Long boj_id) {
+        return ResponseEntity.ok(userService.solvingProblem(user_id, boj_id));
     }
 }
