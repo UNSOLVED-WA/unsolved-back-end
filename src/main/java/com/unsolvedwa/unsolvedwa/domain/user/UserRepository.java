@@ -1,4 +1,4 @@
-package com.unsolvedwa.unsolvedwa.user;
+package com.unsolvedwa.unsolvedwa.domain.user;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

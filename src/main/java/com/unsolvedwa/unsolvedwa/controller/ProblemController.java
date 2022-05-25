@@ -1,5 +1,7 @@
-package com.unsolvedwa.unsolvedwa.problem;
+package com.unsolvedwa.unsolvedwa.controller;
 
+import com.unsolvedwa.unsolvedwa.domain.problem.Problem;
+import com.unsolvedwa.unsolvedwa.domain.problem.ProblemService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -15,11 +17,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/problem")
 @RequiredArgsConstructor
 public class ProblemController {
-    private final ProblemService problemService;
 
-    @Operation(description = "문제조회")
-    @GetMapping(value = "/{id}")
-    public ResponseEntity<Problem> getProblem(@Parameter @PathVariable Long id) {
-        return ResponseEntity.ok(problemService.findByProblemId(id));
-    }
+  private final ProblemService problemService;
+
+  @Operation(description = "문제조회")
+  @GetMapping(value = "/{id}")
+  public ResponseEntity<Problem> getProblem(@Parameter @PathVariable Long id) {
+    return ResponseEntity.ok(problemService.findByProblemId(id));
+  }
 }

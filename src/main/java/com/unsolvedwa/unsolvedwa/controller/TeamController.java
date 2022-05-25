@@ -1,5 +1,7 @@
-package com.unsolvedwa.unsolvedwa.user;
+package com.unsolvedwa.unsolvedwa.controller;
 
+import com.unsolvedwa.unsolvedwa.domain.team.Team;
+import com.unsolvedwa.unsolvedwa.domain.team.TeamService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -11,15 +13,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@Tag(name = "UserController")
-@RequestMapping("/user")
+@Tag(name = "TeamController")
+@RequestMapping("/team")
 @RequiredArgsConstructor
-public class UserController {
-    private final UserService userService;
+public class TeamController {
 
-    @Operation(description = "유저조회")
-    @GetMapping(value = "/{id}")
-    public ResponseEntity<User> getUser(@Parameter @PathVariable Long id) {
-        return ResponseEntity.ok(userService.findByUserId(id));
-    }
+  private final TeamService teamService;
+
+  @Operation(description = "팀조회")
+  @GetMapping(value = "/{id}")
+  public ResponseEntity<Team> getTeam(@Parameter @PathVariable Long id) {
+    return ResponseEntity.ok(teamService.findByTeamId(id));
+  }
 }
