@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @Tag(name = "TeamController")
-@RequestMapping("/team")
+@RequestMapping("/teams")
 @RequiredArgsConstructor
 public class TeamController {
 
