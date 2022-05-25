@@ -7,7 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@Service("problemTeamService")
+@Service("ProblemTeamService")
 @Transactional
 @RequiredArgsConstructor
 public class ProblemTeamService {
