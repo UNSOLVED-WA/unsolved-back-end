@@ -18,18 +18,20 @@ import java.util.List;
 @RequestMapping("/user")
 @RequiredArgsConstructor
 public class UserController {
-    private final UserService userService;
-    private final ProblemTeamService problemTeamService;
 
-    @Operation(description = "유저조회")
-    @GetMapping(value = "/{id}")
-    public ResponseEntity<User> getUser(@Parameter @PathVariable Long id) {
-        return ResponseEntity.ok(userService.findById(id));
-    }
+  private final UserService userService;
+  private final ProblemTeamService problemTeamService;
 
-    @Operation(description = "특정 문제 품")
-    @PostMapping(value = "/solving")
-    public ResponseEntity<List<ScoreDto>> postSolving(@Parameter Long user_id, @Parameter Long boj_id) {
-        return ResponseEntity.ok(problemTeamService.solvingProblem(user_id, boj_id));
-    }
+  @Operation(description = "유저조회")
+  @GetMapping(value = "/{id}")
+  public ResponseEntity<User> getUser(@Parameter @PathVariable Long id) {
+    return ResponseEntity.ok(userService.findById(id));
+  }
+
+  @Operation(description = "특정 문제 품")
+  @PostMapping(value = "/solving")
+  public ResponseEntity<List<ScoreDto>> postSolving(@Parameter Long user_id,
+      @Parameter Long boj_id) {
+    return ResponseEntity.ok(problemTeamService.solvingProblem(user_id, boj_id));
+  }
 }

@@ -13,15 +13,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@Tag(name= "TeamController")
+@Tag(name = "TeamController")
 @RequestMapping("/team")
 @RequiredArgsConstructor
 public class TeamController {
-    private final TeamService teamService;
 
-    @Operation(description = "팀조회")
-    @GetMapping(value = "/{id}")
-    public ResponseEntity<Team> getTeam(@Parameter @PathVariable Long id) {
-        return ResponseEntity.ok(teamService.findByTeamId(id));
-    }
+  private final TeamService teamService;
+
+  @Operation(description = "팀조회")
+  @GetMapping(value = "/{id}")
+  public ResponseEntity<Team> getTeam(@Parameter @PathVariable Long id) {
+    return ResponseEntity.ok(teamService.findByTeamId(id));
+  }
 }

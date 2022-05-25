@@ -17,11 +17,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/problem")
 @RequiredArgsConstructor
 public class ProblemController {
-    private final ProblemService problemService;
 
-    @Operation(description = "문제조회")
-    @GetMapping(value = "/{id}")
-    public ResponseEntity<Problem> getProblem(@Parameter @PathVariable Long id) {
-        return ResponseEntity.ok(problemService.findByProblemId(id));
-    }
+  private final ProblemService problemService;
+
+  @Operation(description = "문제조회")
+  @GetMapping(value = "/{id}")
+  public ResponseEntity<Problem> getProblem(@Parameter @PathVariable Long id) {
+    return ResponseEntity.ok(problemService.findByProblemId(id));
+  }
 }
