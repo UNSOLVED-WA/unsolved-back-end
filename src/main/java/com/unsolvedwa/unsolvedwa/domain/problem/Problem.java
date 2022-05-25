@@ -1,7 +1,7 @@
 package com.unsolvedwa.unsolvedwa.domain.problem;
 
 import com.unsolvedwa.unsolvedwa.domain.BaseTimeEntity;
-import com.unsolvedwa.unsolvedwa.domain.problem_team.ProblemTeam;
+import com.unsolvedwa.unsolvedwa.domain.problemteam.ProblemTeam;
 import lombok.Getter;
 
 import javax.persistence.*;

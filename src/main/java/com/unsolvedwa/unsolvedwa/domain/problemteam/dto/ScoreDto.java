@@ -1,6 +1,6 @@
-package com.unsolvedwa.unsolvedwa.domain.problem_team.dto;
+package com.unsolvedwa.unsolvedwa.domain.problemteam.dto;
 
-import com.unsolvedwa.unsolvedwa.domain.problem_team.ProblemTeam;
+import com.unsolvedwa.unsolvedwa.domain.problemteam.ProblemTeam;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.unsolvedwa.unsolvedwa.domain.problem_team;
+package com.unsolvedwa.unsolvedwa.domain.problemteam;
 
 public interface ProblemTeamRepositoryCustom {
 

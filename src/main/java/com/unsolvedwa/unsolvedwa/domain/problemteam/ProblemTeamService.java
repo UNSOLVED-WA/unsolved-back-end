@@ -1,6 +1,6 @@
-package com.unsolvedwa.unsolvedwa.domain.problem_team;
+package com.unsolvedwa.unsolvedwa.domain.problemteam;
 
-import com.unsolvedwa.unsolvedwa.domain.problem_team.dto.ScoreDto;
+import com.unsolvedwa.unsolvedwa.domain.problemteam.dto.ScoreDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

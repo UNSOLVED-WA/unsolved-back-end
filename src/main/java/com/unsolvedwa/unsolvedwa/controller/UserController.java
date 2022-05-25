@@ -1,7 +1,7 @@
 package com.unsolvedwa.unsolvedwa.controller;
 
-import com.unsolvedwa.unsolvedwa.domain.problem_team.ProblemTeamService;
-import com.unsolvedwa.unsolvedwa.domain.problem_team.dto.ScoreDto;
+import com.unsolvedwa.unsolvedwa.domain.problemteam.ProblemTeamService;
+import com.unsolvedwa.unsolvedwa.domain.problemteam.dto.ScoreDto;
 import com.unsolvedwa.unsolvedwa.domain.user.User;
 import com.unsolvedwa.unsolvedwa.domain.user.UserService;
 import io.swagger.v3.oas.annotations.Operation;
