@@ -1,8 +1,8 @@
 package com.unsolvedwa.unsolvedwa.domain.user;
 
 import com.unsolvedwa.unsolvedwa.domain.BaseTimeEntity;
-import com.unsolvedwa.unsolvedwa.domain.problem_team.ProblemTeam;
-import com.unsolvedwa.unsolvedwa.domain.user_team.UserTeam;
+import com.unsolvedwa.unsolvedwa.domain.problemteam.ProblemTeam;
+import com.unsolvedwa.unsolvedwa.domain.userteam.UserTeam;
 import com.unsolvedwa.unsolvedwa.domain.ranking.Ranking;
 import lombok.Getter;
 
