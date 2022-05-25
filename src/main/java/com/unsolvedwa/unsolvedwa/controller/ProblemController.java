@@ -19,25 +19,28 @@ import java.util.List;
 @RequestMapping("/problems")
 @RequiredArgsConstructor
 public class ProblemController {
-    private final ProblemService problemService;
-    private final ProblemTeamService problemTeamService;
 
-    @Operation(description = "문제조회")
-    @GetMapping(value = "/{id}")
-    public ResponseEntity<Problem> getProblem(@Parameter @PathVariable Long id) {
-        return ResponseEntity.ok(problemService.findByProblemId(id));
-    }
+  private final ProblemService problemService;
+  private final ProblemTeamService problemTeamService;
 
-    @Operation(description = "특정 문제 품")
-    @PostMapping(value = "/solving")
-    public ResponseEntity<List<ScoreDto>> postSolving(@Parameter Long user_id, @Parameter Long boj_id) {
-        return ResponseEntity.ok(problemTeamService.solvingProblem(user_id, boj_id));
-    }
+  @Operation(description = "문제조회")
+  @GetMapping(value = "/{id}")
+  public ResponseEntity<Problem> getProblem(@Parameter @PathVariable Long id) {
+    return ResponseEntity.ok(problemService.findByProblemId(id));
+  }
 
-    @Operation(description = "unsolved 리스트 조회")
-    @GetMapping(value = "/{team_id}/{tier}")
-    public ResponseEntity<List<Problem>> getUnsolvedProblems(@Parameter @PathVariable Long team_id, @Parameter @PathVariable Long tier) {
-        //TODO: service 구현하여 작성
-        return ResponseEntity.ok(new ArrayList<>());
-    }
+  @Operation(description = "특정 문제 품")
+  @PostMapping(value = "/solving")
+  public ResponseEntity<List<ScoreDto>> postSolving(@Parameter Long user_id,
+      @Parameter Long boj_id) {
+    return ResponseEntity.ok(problemTeamService.solvingProblem(user_id, boj_id));
+  }
+
+  @Operation(description = "unsolved 리스트 조회")
+  @GetMapping(value = "/{team_id}/{tier}")
+  public ResponseEntity<List<Problem>> getUnsolvedProblems(@Parameter @PathVariable Long team_id,
+      @Parameter @PathVariable Long tier) {
+    //TODO: service 구현하여 작성
+    return ResponseEntity.ok(new ArrayList<>());
+  }
 }

@@ -11,10 +11,11 @@ import java.util.List;
 @Transactional
 @RequiredArgsConstructor
 public class RankingService {
-    private final RankingRepository rankingRepository;
 
-    public List<Ranking> findById(Long id) {
-        //TODO: repository 구현하여 작성
-        return new ArrayList<Ranking>();
-    }
+  private final RankingRepository rankingRepository;
+
+  public List<Ranking> findById(Long id) {
+    //TODO: repository 구현하여 작성
+    return new ArrayList<Ranking>();
+  }
 }

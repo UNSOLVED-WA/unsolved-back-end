@@ -18,12 +18,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/users")
 @RequiredArgsConstructor
 public class UserController {
-    private final UserService userService;
-    private final ProblemTeamService problemTeamService;
 
-    @Operation(description = "유저조회")
-    @GetMapping(value = "/{id}")
-    public ResponseEntity<User> getUser(@Parameter @PathVariable Long id) {
-        return ResponseEntity.ok(userService.findById(id));
-    }
+  private final UserService userService;
+  private final ProblemTeamService problemTeamService;
+
+  @Operation(description = "유저조회")
+  @GetMapping(value = "/{id}")
+  public ResponseEntity<User> getUser(@Parameter @PathVariable Long id) {
+    return ResponseEntity.ok(userService.findById(id));
+  }
 }

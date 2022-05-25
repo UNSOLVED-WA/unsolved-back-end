@@ -12,18 +12,20 @@ import java.util.List;
 @Entity
 @Getter
 public class Team extends BaseTimeEntity {
-    @Id @GeneratedValue
-    @Column(name = "group_id")
-    private Long id;
 
-    private String name;
+  @Id
+  @GeneratedValue
+  @Column(name = "group_id")
+  private Long id;
 
-    @OneToMany(mappedBy = "team", cascade = CascadeType.ALL)
-    private List<UserTeam> userTeams;
+  private String name;
 
-    @OneToMany(mappedBy = "team", cascade = CascadeType.ALL)
-    private List<ProblemTeam> problemTeams;
+  @OneToMany(mappedBy = "team", cascade = CascadeType.ALL)
+  private List<UserTeam> userTeams;
 
-    @OneToMany(mappedBy = "team", cascade = CascadeType.ALL)
-    private List<Ranking> rankings;
+  @OneToMany(mappedBy = "team", cascade = CascadeType.ALL)
+  private List<ProblemTeam> problemTeams;
+
+  @OneToMany(mappedBy = "team", cascade = CascadeType.ALL)
+  private List<Ranking> rankings;
 }

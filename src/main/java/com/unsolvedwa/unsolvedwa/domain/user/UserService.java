@@ -8,10 +8,11 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 @RequiredArgsConstructor
 public class UserService {
-    private final UserRepository userRepository;
 
-    @Transactional(readOnly = true)
-    public User findById(Long id) {
-        return userRepository.findById(id).get();
-    }
+  private final UserRepository userRepository;
+
+  @Transactional(readOnly = true)
+  public User findById(Long id) {
+    return userRepository.findById(id).get();
+  }
 }

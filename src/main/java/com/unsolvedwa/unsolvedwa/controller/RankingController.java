@@ -19,19 +19,20 @@ import java.util.List;
 @RequestMapping("/rankings")
 @RequiredArgsConstructor
 public class RankingController {
-    private final RankingService rankingService;
 
-    @Operation(description = "전체기간랭킹")
-    @GetMapping(value = "/{team_id}")
-    public ResponseEntity<List<Ranking>> getRanking(@Parameter @PathVariable Long team_id) {
-        //TODO: service 구현하여 작성
-        return ResponseEntity.ok(rankingService.findById(team_id));
-    }
+  private final RankingService rankingService;
 
-    @Operation(description = "월간랭킹")
-    @GetMapping(value = "/month/{team_id}")
-    public ResponseEntity<List<Ranking>> getRankingMonth(@Parameter @PathVariable Long team_id) {
-        //TODO: service 구현하여 작성
-        return ResponseEntity.ok(rankingService.findById(team_id));
-    }
+  @Operation(description = "전체기간랭킹")
+  @GetMapping(value = "/{team_id}")
+  public ResponseEntity<List<Ranking>> getRanking(@Parameter @PathVariable Long team_id) {
+    //TODO: service 구현하여 작성
+    return ResponseEntity.ok(rankingService.findById(team_id));
+  }
+
+  @Operation(description = "월간랭킹")
+  @GetMapping(value = "/month/{team_id}")
+  public ResponseEntity<List<Ranking>> getRankingMonth(@Parameter @PathVariable Long team_id) {
+    //TODO: service 구현하여 작성
+    return ResponseEntity.ok(rankingService.findById(team_id));
+  }
 }

@@ -14,10 +14,11 @@ import java.time.LocalDateTime;
 @MappedSuperclass //공통맵핑정보
 @EntityListeners(AuditingEntityListener.class) //entity를감시?
 public abstract class BaseTimeEntity {
-    @CreatedDate
-    @Column(updatable = false, nullable = false)
-    private LocalDateTime createAt;
 
-    @LastModifiedDate
-    private LocalDateTime updatedAt;
+  @CreatedDate
+  @Column(updatable = false, nullable = false)
+  private LocalDateTime createAt;
+
+  @LastModifiedDate
+  private LocalDateTime updatedAt;
 }

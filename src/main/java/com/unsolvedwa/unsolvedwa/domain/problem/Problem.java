@@ -10,19 +10,21 @@ import java.util.List;
 @Entity
 @Getter
 public class Problem extends BaseTimeEntity {
-    @Id @GeneratedValue
-    @Column(name = "problem_id")
-    private Long id;
 
-    private String title;
+  @Id
+  @GeneratedValue
+  @Column(name = "problem_id")
+  private Long id;
 
-    private Long tier;
+  private String title;
 
-    @OneToMany(mappedBy = "problem", cascade = CascadeType.ALL)
-    private List<ProblemTeam> problemTeams;
+  private Long tier;
 
-    public void setBasicInfo(String title, Long tier) {
-        this.title = title;
-        this.tier = tier;
-    }
+  @OneToMany(mappedBy = "problem", cascade = CascadeType.ALL)
+  private List<ProblemTeam> problemTeams;
+
+  public void setBasicInfo(String title, Long tier) {
+    this.title = title;
+    this.tier = tier;
+  }
 }

@@ -10,17 +10,19 @@ import javax.persistence.*;
 @Entity
 @Getter
 public class UserTeam extends BaseTimeEntity {
-    @Id @GeneratedValue
-    @Column(name = "user_team_id")
-    private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "team_id")
-    private Team team;
+  @Id
+  @GeneratedValue
+  @Column(name = "user_team_id")
+  private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "team_id")
+  private Team team;
 
-    private Long score;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "user_id")
+  private User user;
+
+  private Long score;
 }
