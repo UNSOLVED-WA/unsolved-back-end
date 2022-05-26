@@ -30,4 +30,13 @@ public class ProblemTeam extends BaseTimeEntity {
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "user_id")
   private User user;
+
+  protected ProblemTeam(){
+  }
+
+  public ProblemTeam(Problem problem, Team team, User user){
+    this.problem = problem;
+    this.team = team;
+    this.user = user;
+  }
 }
