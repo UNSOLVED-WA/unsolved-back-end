@@ -23,7 +23,7 @@ public class Ranking extends BaseTimeEntity {
 
   private Long score;
 
-  private Long rank;
+  private Long monthRanking;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "user_id")
@@ -38,7 +38,7 @@ public class Ranking extends BaseTimeEntity {
 
   public Ranking(User user, Team team) {
     this.score = 0L;
-    this.rank = 0L;
+    this.monthRanking = 0L;
     this.user = user;
     this.team = team;
   }
