@@ -2,12 +2,16 @@ package com.unsolvedwa.unsolvedwa.domain.user;
 
 import com.unsolvedwa.unsolvedwa.domain.BaseTimeEntity;
 import com.unsolvedwa.unsolvedwa.domain.problemteam.ProblemTeam;
-import com.unsolvedwa.unsolvedwa.domain.userteam.UserTeam;
 import com.unsolvedwa.unsolvedwa.domain.ranking.Ranking;
-import lombok.Getter;
-
-import javax.persistence.*;
+import com.unsolvedwa.unsolvedwa.domain.userteam.UserTeam;
 import java.util.List;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import lombok.Getter;
 
 @Entity
 @Getter
@@ -31,7 +35,11 @@ public class User extends BaseTimeEntity {
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
   private List<UserTeam> userTeams;
 
-  public void setBasicInfoUser(String bojId) {
+  protected User() {
+  }
+
+  public User(String bojId) {
     this.bojId = bojId;
+    this.solvingCount = 0L;
   }
 }
