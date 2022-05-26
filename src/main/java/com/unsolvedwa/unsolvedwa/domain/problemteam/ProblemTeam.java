@@ -4,9 +4,14 @@ import com.unsolvedwa.unsolvedwa.domain.BaseTimeEntity;
 import com.unsolvedwa.unsolvedwa.domain.problem.Problem;
 import com.unsolvedwa.unsolvedwa.domain.team.Team;
 import com.unsolvedwa.unsolvedwa.domain.user.User;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import lombok.Getter;
-
-import javax.persistence.*;
 
 @Entity
 @Getter
@@ -31,10 +36,10 @@ public class ProblemTeam extends BaseTimeEntity {
   @JoinColumn(name = "user_id")
   private User user;
 
-  protected ProblemTeam(){
+  protected ProblemTeam() {
   }
 
-  public ProblemTeam(Problem problem, Team team, User user){
+  public ProblemTeam(Problem problem, Team team, User user) {
     this.problem = problem;
     this.team = team;
     this.user = user;
