@@ -9,4 +9,5 @@ public interface UserTeamRepository extends JpaRepository<UserTeam, Long> {
   public UserTeam findByTeamAndUser(Team team, User user);
   public List<UserTeam> findByTeam(Team team);
   public List<UserTeam> findByUser(User user);
+  public List<UserTeam> findTop10ByTeamOrderByScoreDesc(Team team);
 }
