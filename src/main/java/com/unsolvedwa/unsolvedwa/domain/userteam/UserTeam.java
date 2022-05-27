@@ -25,4 +25,16 @@ public class UserTeam extends BaseTimeEntity {
   private User user;
 
   private Long score;
+
+  protected UserTeam(){}
+
+  public UserTeam(Team team, User user){
+    this.team = team;
+    this.user = user;
+    this.score = 0L;
+  }
+
+  public void increaseScore(Long score) {
+    this.score += score;
+  }
 }

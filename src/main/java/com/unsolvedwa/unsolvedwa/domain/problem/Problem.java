@@ -2,10 +2,14 @@ package com.unsolvedwa.unsolvedwa.domain.problem;
 
 import com.unsolvedwa.unsolvedwa.domain.BaseTimeEntity;
 import com.unsolvedwa.unsolvedwa.domain.problemteam.ProblemTeam;
-import lombok.Getter;
-
-import javax.persistence.*;
 import java.util.List;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import lombok.Getter;
 
 @Entity
 @Getter
@@ -16,6 +20,8 @@ public class Problem extends BaseTimeEntity {
   @Column(name = "problem_id")
   private Long id;
 
+  private Long problemNumber;
+
   private String title;
 
   private Long tier;
@@ -23,7 +29,11 @@ public class Problem extends BaseTimeEntity {
   @OneToMany(mappedBy = "problem", cascade = CascadeType.ALL)
   private List<ProblemTeam> problemTeams;
 
-  public void setBasicInfo(String title, Long tier) {
+  protected Problem() {
+  }
+
+  public Problem(Long problemNumber, String title, Long tier) {
+    this.problemNumber = problemNumber;
     this.title = title;
     this.tier = tier;
   }
