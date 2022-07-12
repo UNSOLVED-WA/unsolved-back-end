@@ -17,7 +17,6 @@ import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
@@ -134,7 +133,7 @@ class RankingRepositoryTest {
     }
 
     @Test
-    @Transactional
+    @Transactional(readOnly = true)
     void findMonthRankingTop10_SuccessTest() throws Exception {
       //given
       // team1 에 대한 테스트
@@ -152,7 +151,7 @@ class RankingRepositoryTest {
     }
 
     @Test
-    @Rollback
+    @Transactional(readOnly = true)
     void findMonthRankingTop10_SameScoreAtRanking() throws Exception {
       //given
       // team2에 대한 테스트
@@ -169,7 +168,7 @@ class RankingRepositoryTest {
     }
 
     @Test
-    @Rollback
+    @Transactional(readOnly = true)
     void findMonthRankingTop10_LessUserAtRanking() throws Exception {
       //given
 
@@ -185,7 +184,7 @@ class RankingRepositoryTest {
     }
 
     @Test
-    @Rollback
+    @Transactional(readOnly = true)
     void findMonthRankingTop10_NoUserAtTeam() throws Exception {
       //given
 
@@ -197,7 +196,7 @@ class RankingRepositoryTest {
     }
 
     @Test
-    @Rollback
+    @Transactional(readOnly = true)
     void findMonthRankingTop10_NoUserAtRanking() throws Exception {
       //given
 
@@ -209,6 +208,7 @@ class RankingRepositoryTest {
     }
 
     @Test
+    @Transactional(readOnly = true)
     void findMonthRankingTop10_NoTeamTest() throws Exception {
       //given
 
@@ -218,10 +218,5 @@ class RankingRepositoryTest {
       // then
       Assertions.assertThat(responseData).isEmpty();
     }
-
   }
-
-
-
-
 }
