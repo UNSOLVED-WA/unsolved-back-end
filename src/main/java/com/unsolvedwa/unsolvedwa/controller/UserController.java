@@ -3,6 +3,8 @@ package com.unsolvedwa.unsolvedwa.controller;
 import com.unsolvedwa.unsolvedwa.domain.problemteam.ProblemTeamService;
 import com.unsolvedwa.unsolvedwa.domain.user.User;
 import com.unsolvedwa.unsolvedwa.domain.user.UserService;
+import com.unsolvedwa.unsolvedwa.domain.user.dto.UserResDTO;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -23,8 +25,8 @@ public class UserController {
   private final ProblemTeamService problemTeamService;
 
   @Operation(description = "유저조회")
-  @GetMapping(value = "/{id}")
-  public ResponseEntity<User> getUser(@Parameter @PathVariable Long id) {
-    return ResponseEntity.ok(userService.findById(id));
+  @GetMapping(value = "/{bojId}")
+  public ResponseEntity<UserResDTO> getUser(@Parameter @PathVariable String bojId) {
+    return ResponseEntity.ok(userService.findByBojId(bojId));
   }
 }

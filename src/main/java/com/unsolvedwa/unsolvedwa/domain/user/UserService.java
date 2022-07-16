@@ -1,8 +1,13 @@
 package com.unsolvedwa.unsolvedwa.domain.user;
 
 import lombok.RequiredArgsConstructor;
+
+import java.util.Optional;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.unsolvedwa.unsolvedwa.domain.user.dto.UserResDTO;
 
 @Service("userService")
 @Transactional
@@ -12,7 +17,14 @@ public class UserService {
   private final UserRepository userRepository;
 
   @Transactional(readOnly = true)
-  public User findById(Long id) {
-    return userRepository.findById(id).get();
+  public UserResDTO findByBojId(String bojId) {
+    Optional<User> opsUser = userRepository.findByBojId(bojId);
+    UserResDTO dto = new UserResDTO();
+    if (!opsUser.isEmpty()) {
+        dto.setId(opsUser.get().getId());
+        dto.setBojId(opsUser.get().getBojId());
+        dto.setSolvingCount(opsUser.get().getSolvingCount());
+    }
+    return dto;
   }
 }
