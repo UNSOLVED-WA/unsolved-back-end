@@ -2,6 +2,7 @@ package com.unsolvedwa.unsolvedwa.controller;
 
 import com.unsolvedwa.unsolvedwa.domain.ranking.Ranking;
 import com.unsolvedwa.unsolvedwa.domain.ranking.RankingService;
+import com.unsolvedwa.unsolvedwa.domain.ranking.dto.AllRankingResponseDto;
 import com.unsolvedwa.unsolvedwa.domain.ranking.dto.MonthRankingRequestDto;
 import com.unsolvedwa.unsolvedwa.domain.ranking.dto.MonthRankingTop10ResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
@@ -25,11 +26,24 @@ public class RankingController {
 
   private final RankingService rankingService;
 
-  @Operation(description = "전체기간랭킹")
+/*  @Operation(description = "전체기간랭킹")
   @GetMapping(value = "/{teamId}")
   public ResponseEntity<List<Ranking>> getRanking(@Parameter @PathVariable Long teamId) {
     //TODO: service 구현하여 작성
     return ResponseEntity.ok(rankingService.findById());
+  }*/
+
+  @Operation(description = "전체랭킹")
+  @GetMapping(value = "/{group_id}")
+  public ResponseEntity<List<AllRankingResponseDto>> getRanking(@Parameter @PathVariable Long teamId) {
+    try
+    {
+      return  ResponseEntity.ok(rankingService.AllRanking(teamId));
+    }
+    catch (NotFoundException e)
+    {
+      return ResponseEntity.notFound().build();
+    }
   }
 
   @Operation(description = "월간랭킹")
