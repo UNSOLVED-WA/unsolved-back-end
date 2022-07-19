@@ -26,6 +26,13 @@ jobs:
       with:
         java-version: '11'
         distribution: 'temurin'
+    - name: Set up MySQL
+      uses: actions/mysql-action@v1.1
+      with:
+        chracter set server: 'utf8'
+        mysql database: 'unsolved_wa'
+        mysql user: 'root'
+        mysql password: '1234'
     - name: Build with Gradle
       uses: gradle/gradle-build-action@0d13054264b0bb894ded474f08ebb30921341cee
       with:
