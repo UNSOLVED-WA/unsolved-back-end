@@ -26,8 +26,10 @@ jobs:
       with:
         java-version: '11'
         distribution: 'temurin'
+    - name: Shutdown Ubuntu MySQL (SUDO)
+      run: sudo service mysql stop
     - name: Set up MySQL
-      uses: actions/mysql-action@v1.1
+      uses: actions/mysql-action@master
       with:
         chracter set server: 'utf8'
         mysql database: 'unsolved_wa'
