@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.Optional;
 
+import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,14 +18,14 @@ public class UserService {
   private final UserRepository userRepository;
 
   @Transactional(readOnly = true)
-  public UserResDTO findByBojId(String bojId) {
+  public UserResDTO findByBojId(String bojId) throws NotFoundException {
     Optional<User> opsUser = userRepository.findByBojId(bojId);
     UserResDTO dto = new UserResDTO();
-    if (!opsUser.isEmpty()) {
-        dto.setId(opsUser.get().getId());
-        dto.setBojId(opsUser.get().getBojId());
-        dto.setSolvingCount(opsUser.get().getSolvingCount());
-    }
+    if (opsUser.isEmpty())
+    	throw new NotFoundException();
+    dto.setId(opsUser.get().getId());
+    dto.setBojId(opsUser.get().getBojId());
+    dto.setSolvingCount(opsUser.get().getSolvingCount());
     return dto;
   }
 }

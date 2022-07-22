@@ -9,6 +9,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,6 +29,11 @@ public class UserController {
   @Operation(description = "유저조회")
   @GetMapping(value = "/{bojId}")
   public ResponseEntity<UserResDTO> getUser(@Parameter @PathVariable String bojId) {
-    return ResponseEntity.ok(userService.findByBojId(bojId));
+    try {
+    	return ResponseEntity.ok(userService.findByBojId(bojId));
+    }
+    catch (NotFoundException e) {
+    	return ResponseEntity.notFound().build();
+    }
   }
 }
