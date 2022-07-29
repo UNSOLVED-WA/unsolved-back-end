@@ -5,9 +5,9 @@ spring:
     show-sql: true
     generate-ddl: false
   datasource:
-    url: jdbc:mysql://database:2345/unsolved_wa?useSSL=false&allowPublicKeyRetrieval=true
+    url: jdbc:mysql://localhost:3306/unsolved_wa?useSSL=false&allowPublicKeyRetrieval=true
     username: root
-    password: 1234
+    password: root
 
 sample:
   value: default
