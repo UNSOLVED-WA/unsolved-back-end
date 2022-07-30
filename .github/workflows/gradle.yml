@@ -1,49 +1,44 @@
-name: Java CI with Gradle
+name: HoeStory Github Action
 
 on:
-  push: # feature/*와 develop 브랜치에서 push가 일어났을 때 github action 동작
-    branches:
-      - 'master'
-      - 'develop'
-  pull_request: # feature/*와 develop 브랜치에서 PR이 일어났을 때 github action 동작
-    branches:
-      - 'master'
-      - 'develop'
+  push:
+    branches: [ 브랜치명 ]
+  pull_request:
+    branches: [ 브랜치명 ]
 
+permissions: write-all
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
-      - name: Set up JDK 1.8
-        uses: actions/setup-java@v1
+      - uses: actions/checkout@v3
+
+      - name: Set up JDK 11
+        uses: actions/setup-java@v3
         with:
-          java-version: 1.8
+          java-version: '11'
+          distribution: 'temurin'
+
+      - name: Setup MySQL
+        uses: samin/mysql-action@v1
+        with:
+          character set server: 'utf8'
+          mysql database: unsolved_wa
+          mysql user: developer
+          mysql password: 1234
+
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
+
+      - name: Build with Gradle
+        uses: gradle/gradle-build-action@0d13054264b0bb894ded474f08ebb30921341cee
+        with:
+          arguments: build
+
       - name: Build with Gradle
         run: ./gradlew build
 
-      - name: Shutdown Ubuntu MySQL (SUDO)
-        run: sudo service mysql stop # Shutdown the Default MySQL, "sudo" is necessary, please not remove it
-
-       # ... some steps before set-up MySQL ...
-      - name: Set up MySQL
-        uses: mirromutth/mysql-action@v1.1
-        with:
-          #host port: 3800 # Optional, default value is 3306. The port of host
-          #container port: 3307 # Optional, default value is 3306. The port of container
-          #character set server: 'utf8' # Optional, default value is 'utf8mb4'. The '--character-set-server' option for mysqld
-          #collation server: 'utf8_general_ci' # Optional, default value is 'utf8mb4_general_ci'. The '--collation-server' option for mysqld
-          #mysql version: '8.0' # Optional, default value is "latest". The version of the MySQL
-          #mysql database: 'some_test' # Optional, default value is "test". The specified database which will be create
-          #mysql root password: ${{ secrets.RootPassword }} # Required if "mysql user" is empty, default is empty. The root superuser password
-          mysql user: 'developer' # Required if "mysql root password" is empty, default is empty. The superuser for the specified database. Can use secrets, too
-          mysql password: 1234 # Required if "mysql user" exists. The password for the "mysql user"
-        # ... Set-up MySQL configuration, see Usage
-
-       # ... some steps after set-up MySQL ...
-
-      # ... some another config ...
+      - name: Test with Gradle
+        run: ./gradlew test
