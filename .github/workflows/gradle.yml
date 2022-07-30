@@ -1,56 +1,45 @@
-# This workflow uses actions that are not certified by GitHub.
-# They are provided by a third-party and are governed by
-# separate terms of service, privacy policy, and support
-# documentation.
-# This workflow will build a Java project with Gradle and cache/restore any dependencies to improve the workflow execution time
-# For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-gradle
-
 name: Java CI with Gradle
 
 on:
-  push: # feature/*와 develop 브랜치에서 push가 일어났을 때 github action 동작
-    branches:
-      - 'master'
-      - 'develop'
-  pull_request: # feature/*와 develop 브랜치에서 PR이 일어났을 때 github action 동작
-    branches:
-      - 'master'
-      - 'develop'
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
 
-# 참고사항
-# push가 일어난 브랜치에 PR이 존재하면, push에 대한 이벤트와 PR에 대한 이벤트 모두 발생합니다.
 
 jobs:
   build:
-    runs-on: ubuntu-latest # 실행 환경 지정
+    runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2 # github action 버전 지정(major version)
-
-      - name: Set up JDK 11 # JAVA 버전 지정
+      - uses: actions/checkout@v2
+      - name: Set up JDK 1.8
         uses: actions/setup-java@v1
         with:
-          java-version: 11
-
+          java-version: 1.8
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
+      - name: Build with Gradle
+        run: ./gradlew build
 
-      ## create application-database.yaml
-      - name: make application-database.yaml
-        run: |
-          # create application-database.yaml
-           cd ./src/main/resources
+      - name: Shutdown Ubuntu MySQL (SUDO)
+        run: sudo service mysql stop # Shutdown the Default MySQL, "sudo" is necessary, please not remove it
 
-          # application-database.yaml 파일 생성
-           touch ./application-database.yaml
+      - # ... some steps before set-up MySQL ...
+      - name: Set up MySQL
+        uses: mirromutth/mysql-action@v1.1
+        with:
+          #host port: 3800 # Optional, default value is 3306. The port of host
+          #container port: 3307 # Optional, default value is 3306. The port of container
+          #character set server: 'utf8' # Optional, default value is 'utf8mb4'. The '--character-set-server' option for mysqld
+          #collation server: 'utf8_general_ci' # Optional, default value is 'utf8mb4_general_ci'. The '--collation-server' option for mysqld
+          #mysql version: '8.0' # Optional, default value is "latest". The version of the MySQL
+          #mysql database: 'some_test' # Optional, default value is "test". The specified database which will be create
+          #mysql root password: ${{ secrets.RootPassword }} # Required if "mysql user" is empty, default is empty. The root superuser password
+          mysql user: 'developer' # Required if "mysql root password" is empty, default is empty. The superuser for the specified database. Can use secrets, too
+          mysql password: 1234 # Required if "mysql user" exists. The password for the "mysql user"
+        # ... Set-up MySQL configuration, see Usage
 
-          # GitHub-Actions 에서 설정한 값을 application-database.yaml 파일에 쓰기
-          echo "${{ secrets.DATABASE }}" >> ./application-database.yaml
-        shell: bash
+      - # ... some steps after set-up MySQL ...
 
-
-      - name: Build with Gradle # 실제 application build(-x 옵션을 통해 test는 제외)
-        run: ./gradlew build -x test
-
-      - name: Test with Gradle # test application build
-        run: ./gradlew test
+      # ... some another config ...
