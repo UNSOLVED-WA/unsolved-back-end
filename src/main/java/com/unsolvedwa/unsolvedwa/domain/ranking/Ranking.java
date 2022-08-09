@@ -3,6 +3,7 @@ package com.unsolvedwa.unsolvedwa.domain.ranking;
 import com.unsolvedwa.unsolvedwa.domain.BaseTimeEntity;
 import com.unsolvedwa.unsolvedwa.domain.team.Team;
 import com.unsolvedwa.unsolvedwa.domain.user.User;
+import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -41,6 +42,11 @@ public class Ranking extends BaseTimeEntity {
     this.monthRanking = 0L;
     this.user = user;
     this.team = team;
+  }
+
+  public void changeCreateAtForTestData(LocalDateTime createAt)
+  {
+    this.setCreateAt(createAt);
   }
 
   public void increaseScore(Long score) {
