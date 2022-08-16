@@ -103,7 +103,7 @@ class RankingRepositoryTest {
       //given
       Integer numOfUsers = 20;
       Integer numOfTeamUsers = 20;
-      Integer numOfRankUsers = 10;
+      Integer numOfRankUsers = 20;
       Boolean useSameScore = Boolean.FALSE;
 
       setTestData(numOfUsers, numOfTeamUsers, numOfRankUsers, useSameScore);
@@ -126,7 +126,7 @@ class RankingRepositoryTest {
       //given
       Integer numOfUsers = 20;
       Integer numOfTeamUsers = 20;
-      Integer numOfRankUsers = 10;
+      Integer numOfRankUsers = 20;
       Boolean useSameScore = Boolean.TRUE;
 
       setTestData(numOfUsers, numOfTeamUsers, numOfRankUsers, useSameScore);
