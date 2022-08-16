@@ -10,18 +10,14 @@ import com.unsolvedwa.unsolvedwa.domain.userteam.UserTeamRepository;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
-import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
 @Transactional
-@TestInstance(Lifecycle.PER_CLASS)
 class RankingRepositoryTest {
 
   @Autowired
@@ -40,7 +36,6 @@ class RankingRepositoryTest {
   LocalDateTime lastMonth;
   LocalDateTime nextMonth;
 
-  @BeforeAll
   void setTimeData()
   {
     curMonthDateTime = LocalDateTime.now();
@@ -52,7 +47,6 @@ class RankingRepositoryTest {
   }
 
   @Nested
-  @TestInstance(Lifecycle.PER_CLASS)
   class findMonthRanking {
     // 팀1에 유저 15명 동점자 없음
     // 팀2에 유저 15명 모두 동점자
@@ -111,6 +105,7 @@ class RankingRepositoryTest {
       Integer numOfRankUsers = 20;
       Boolean useSameScore = Boolean.FALSE;
 
+      setTimeData();
       setTestData(numOfUsers, numOfTeamUsers, numOfRankUsers, useSameScore);
 
       //when
@@ -134,6 +129,7 @@ class RankingRepositoryTest {
       Integer numOfRankUsers = 20;
       Boolean useSameScore = Boolean.TRUE;
 
+      setTimeData();
       setTestData(numOfUsers, numOfTeamUsers, numOfRankUsers, useSameScore);
 
       //when
@@ -152,6 +148,7 @@ class RankingRepositoryTest {
       Integer numOfRankUsers = 10;
       Boolean useSameScore = Boolean.FALSE;
 
+      setTimeData();
       setTestData(numOfUsers, numOfTeamUsers, numOfRankUsers, useSameScore);
 
       //when
@@ -175,6 +172,7 @@ class RankingRepositoryTest {
       Integer numOfRankUsers = 10;
       Boolean useSameScore = Boolean.FALSE;
 
+      setTimeData();
       setTestData(numOfUsers, numOfTeamUsers, numOfRankUsers, useSameScore);
 
       //when
@@ -198,6 +196,7 @@ class RankingRepositoryTest {
       Integer numOfRankUsers = 0;
       Boolean useSameScore = Boolean.FALSE;
 
+      setTimeData();
       setTestData(numOfUsers, numOfTeamUsers, numOfRankUsers, useSameScore);
 
       //when
@@ -221,6 +220,7 @@ class RankingRepositoryTest {
       Integer numOfRankUsers = 0;
       Boolean useSameScore = Boolean.FALSE;
 
+      setTimeData();
       setTestData(numOfUsers, numOfTeamUsers, numOfRankUsers, useSameScore);
 
       //when
