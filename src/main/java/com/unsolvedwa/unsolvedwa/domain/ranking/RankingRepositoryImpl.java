@@ -25,7 +25,6 @@ public class RankingRepositoryImpl implements RankingRepositoryCustom{
             .on(ranking.team.id.eq(teamId))
             .innerJoin(ranking.user, user)
             .orderBy(ranking.score.desc())
-            .limit(10L)
             .fetch();
     }
 }
