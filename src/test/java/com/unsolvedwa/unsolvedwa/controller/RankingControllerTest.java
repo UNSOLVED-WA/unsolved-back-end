@@ -7,7 +7,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.unsolvedwa.unsolvedwa.domain.ranking.RankingService;
 import com.unsolvedwa.unsolvedwa.domain.ranking.dto.MonthRankingRequestDto;
-import com.unsolvedwa.unsolvedwa.domain.ranking.dto.MonthRankingTop10ResponseDto;
+import com.unsolvedwa.unsolvedwa.domain.ranking.dto.MonthRankingResponseDto;
 import com.unsolvedwa.unsolvedwa.domain.team.Team;
 import java.util.ArrayList;
 import java.util.List;
@@ -48,14 +48,15 @@ public class RankingControllerTest {
     @Test
     void successTest() throws Exception {
       //given
-      List<MonthRankingTop10ResponseDto> monthRankingTop10ResponseDtoList = new ArrayList<>();
+      List<MonthRankingResponseDto> monthRankingResponseDtoList = new ArrayList<>();
       for (int i = 0; i < 10; i++)
       {
-        MonthRankingTop10ResponseDto monthRankingTop10ResponseDto = new MonthRankingTop10ResponseDto(team.getName(),"user"+i,10L - i);
-        monthRankingTop10ResponseDtoList.add(monthRankingTop10ResponseDto);
+        MonthRankingResponseDto monthRankingResponseDto = new MonthRankingResponseDto(team.getName(),"user"+i,10L - i);
+        monthRankingResponseDtoList.add(monthRankingResponseDto);
       }
       MonthRankingRequestDto monthRankingRequestDto = new MonthRankingRequestDto(teamId);
-      given(rankingService.findMonthRankingAtThisMonth(any())).willReturn(monthRankingTop10ResponseDtoList);
+      given(rankingService.findMonthRankingAtThisMonth(any())).willReturn(
+          monthRankingResponseDtoList);
 
       //when
       // then

@@ -1,6 +1,6 @@
 package com.unsolvedwa.unsolvedwa.domain.ranking;
 
-import com.unsolvedwa.unsolvedwa.domain.ranking.dto.MonthRankingTop10ResponseDto;
+import com.unsolvedwa.unsolvedwa.domain.ranking.dto.MonthRankingResponseDto;
 import com.unsolvedwa.unsolvedwa.domain.team.Team;
 import com.unsolvedwa.unsolvedwa.domain.team.TeamRepository;
 import com.unsolvedwa.unsolvedwa.domain.user.User;
@@ -90,7 +90,12 @@ class RankingRepositoryTest {
 
       for (int i = 0; i < numOfRankUser; i++) {
         Ranking ranking = new Ranking(users.get(i), team);
-        ranking.increaseScore(i + 1L);
+        if (useSameScore) {
+          ranking.increaseScore(numOfUsers + 0L);
+        }
+        else {
+          ranking.increaseScore(i + 1L);
+        }
         rankingRepository.save(ranking);
         ranking.changeCreateAtForTestData(lastMonthDateTime);
         rankingRepository.save(ranking);
@@ -109,7 +114,7 @@ class RankingRepositoryTest {
       setTestData(numOfUsers, numOfTeamUsers, numOfRankUsers, useSameScore);
 
       //when
-      List<MonthRankingTop10ResponseDto> responseData = rankingRepository.findMonthRankingTop10(team.getId(), curMonth);
+      List<MonthRankingResponseDto> responseData = rankingRepository.findMonthRanking(team.getId(), curMonth);
 
       //then
       Assertions.assertThat(responseData).hasSize(numOfRankUsers);
@@ -132,15 +137,10 @@ class RankingRepositoryTest {
       setTestData(numOfUsers, numOfTeamUsers, numOfRankUsers, useSameScore);
 
       //when
-      List<MonthRankingTop10ResponseDto> responseData = rankingRepository.findMonthRankingTop10(team.getId(), curMonth);
+      List<MonthRankingResponseDto> responseData = rankingRepository.findMonthRanking(team.getId(), curMonth);
 
       //then
       Assertions.assertThat(responseData).hasSize(numOfRankUsers);
-
-      for (int i = 0; i < numOfRankUsers; i++){
-        Assertions.assertThat(responseData.get(i).getBojId()).isEqualTo("user" + (i + 1));
-        Assertions.assertThat(responseData.get(i).getScore()).isEqualTo(numOfUsers + 0L);
-      }
     }
 
     @Test
@@ -155,7 +155,7 @@ class RankingRepositoryTest {
       setTestData(numOfUsers, numOfTeamUsers, numOfRankUsers, useSameScore);
 
       //when
-      List<MonthRankingTop10ResponseDto> responseData = rankingRepository.findMonthRankingTop10(team.getId(), curMonth);
+      List<MonthRankingResponseDto> responseData = rankingRepository.findMonthRanking(team.getId(), curMonth);
 
       //then
       Assertions.assertThat(responseData).hasSize(numOfRankUsers);
@@ -178,7 +178,7 @@ class RankingRepositoryTest {
       setTestData(numOfUsers, numOfTeamUsers, numOfRankUsers, useSameScore);
 
       //when
-      List<MonthRankingTop10ResponseDto> responseData = rankingRepository.findMonthRankingTop10(team.getId(), curMonth);
+      List<MonthRankingResponseDto> responseData = rankingRepository.findMonthRanking(team.getId(), curMonth);
 
       //then
       Assertions.assertThat(responseData).hasSize(numOfRankUsers);
@@ -201,7 +201,7 @@ class RankingRepositoryTest {
       setTestData(numOfUsers, numOfTeamUsers, numOfRankUsers, useSameScore);
 
       //when
-      List<MonthRankingTop10ResponseDto> responseData = rankingRepository.findMonthRankingTop10(team.getId(), curMonth);
+      List<MonthRankingResponseDto> responseData = rankingRepository.findMonthRanking(team.getId(), curMonth);
 
       //then
       Assertions.assertThat(responseData).hasSize(numOfRankUsers);
@@ -224,7 +224,7 @@ class RankingRepositoryTest {
       setTestData(numOfUsers, numOfTeamUsers, numOfRankUsers, useSameScore);
 
       //when
-      List<MonthRankingTop10ResponseDto> responseData = rankingRepository.findMonthRankingTop10(team.getId(), curMonth);
+      List<MonthRankingResponseDto> responseData = rankingRepository.findMonthRanking(team.getId(), curMonth);
 
       //then
       Assertions.assertThat(responseData).hasSize(numOfRankUsers);

@@ -1,7 +1,7 @@
 package com.unsolvedwa.unsolvedwa.domain.ranking;
 
 import com.unsolvedwa.unsolvedwa.domain.ranking.dto.MonthRankingRequestDto;
-import com.unsolvedwa.unsolvedwa.domain.ranking.dto.MonthRankingTop10ResponseDto;
+import com.unsolvedwa.unsolvedwa.domain.ranking.dto.MonthRankingResponseDto;
 import com.unsolvedwa.unsolvedwa.domain.team.Team;
 import com.unsolvedwa.unsolvedwa.domain.team.TeamRepository;
 import java.time.LocalDateTime;
@@ -31,13 +31,13 @@ public class RankingService {
     return new ArrayList<>();
   }
 
-  public List<MonthRankingTop10ResponseDto> findMonthRankingAtThisMonth(MonthRankingRequestDto monthRankingRequestDto) throws NotFoundException {
+  public List<MonthRankingResponseDto> findMonthRankingAtThisMonth(MonthRankingRequestDto monthRankingRequestDto) throws NotFoundException {
     Optional<Team> temp = teamRepository.findById(monthRankingRequestDto.getTeamId());
     if (temp.isEmpty())
     {
       throw new NotFoundException();
     }
     LocalDateTime startTime = getCurMonthDateTime();
-    return rankingRepository.findMonthRankingTop10(monthRankingRequestDto.getTeamId(), startTime);
+    return rankingRepository.findMonthRanking(monthRankingRequestDto.getTeamId(), startTime);
   }
 }
