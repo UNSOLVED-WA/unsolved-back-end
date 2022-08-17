@@ -6,13 +6,13 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class MonthRankingTop10ResponseDto {
+public class MonthRankingResponseDto {
   private String teamName;
   private String bojId;
   private Long score;
 
   @QueryProjection
-  public MonthRankingTop10ResponseDto(String teamName, String bojId, Long score) {
+  public MonthRankingResponseDto(String teamName, String bojId, Long score) {
     this.teamName = teamName;
     this.bojId = bojId;
     this.score = score;

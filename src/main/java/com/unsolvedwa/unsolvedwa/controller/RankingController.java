@@ -3,7 +3,7 @@ package com.unsolvedwa.unsolvedwa.controller;
 import com.unsolvedwa.unsolvedwa.domain.ranking.Ranking;
 import com.unsolvedwa.unsolvedwa.domain.ranking.RankingService;
 import com.unsolvedwa.unsolvedwa.domain.ranking.dto.MonthRankingRequestDto;
-import com.unsolvedwa.unsolvedwa.domain.ranking.dto.MonthRankingTop10ResponseDto;
+import com.unsolvedwa.unsolvedwa.domain.ranking.dto.MonthRankingResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -34,7 +34,7 @@ public class RankingController {
 
   @Operation(description = "월간랭킹")
   @GetMapping(value = "/month/{teamId}")
-  public ResponseEntity<List<MonthRankingTop10ResponseDto>> getMonthRanking(@Parameter @PathVariable Long teamId) {
+  public ResponseEntity<List<MonthRankingResponseDto>> getMonthRanking(@Parameter @PathVariable Long teamId) {
     MonthRankingRequestDto monthRankingRequestDto = new MonthRankingRequestDto(teamId);
     try
     {

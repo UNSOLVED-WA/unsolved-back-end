@@ -1,6 +1,6 @@
 package com.unsolvedwa.unsolvedwa.domain.ranking;
 
-import com.unsolvedwa.unsolvedwa.domain.ranking.dto.MonthRankingTop10ResponseDto;
+import com.unsolvedwa.unsolvedwa.domain.ranking.dto.MonthRankingResponseDto;
 import com.unsolvedwa.unsolvedwa.domain.team.Team;
 import com.unsolvedwa.unsolvedwa.domain.team.TeamRepository;
 import com.unsolvedwa.unsolvedwa.domain.user.User;
@@ -10,18 +10,14 @@ import com.unsolvedwa.unsolvedwa.domain.userteam.UserTeamRepository;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
-import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
 @Transactional
-@TestInstance(Lifecycle.PER_CLASS)
 class RankingRepositoryTest {
 
   @Autowired
@@ -40,7 +36,6 @@ class RankingRepositoryTest {
   LocalDateTime lastMonth;
   LocalDateTime nextMonth;
 
-  @BeforeAll
   void setTimeData()
   {
     curMonthDateTime = LocalDateTime.now();
@@ -52,171 +47,192 @@ class RankingRepositoryTest {
   }
 
   @Nested
-  @TestInstance(Lifecycle.PER_CLASS)
-  class findMonthRankingTop10 {
+  class findMonthRanking {
     // 팀1에 유저 15명 동점자 없음
     // 팀2에 유저 15명 모두 동점자
     // 팀3 랭킹에 유저가 5명
     // 팀4 랭킹에 유저 없음
     // 팀5 에 유저 없음
 
-    List<Team> teams;
+    Team team;
 
-    @BeforeAll
-    void setTestData() {
-      for (int i = 1; i <= 20; i++){
-        User user = new User("user"+i);
+    void setTestData(Integer numOfUsers, Integer numOfTeamUsers, Integer numOfRankUser, Boolean useSameScore) {
+      for (int i = 0; i < numOfUsers; i++){
+        User user = new User("user"+ (i + 1));
         userRepository.save(user);
       }
       List<User> users = userRepository.findAll();
 
-      for (int i = 1; i <= 5; i++){
-        Team team = new Team("team" + i);
-        teamRepository.save(team);
-      }
-      teams = teamRepository.findAll();
+      team = new Team("team");
+      teamRepository.save(team);
 
-
-      for (int i = 0; i < 4; i++){
-        for (int j = i; j < 15 + i; j++){
-          UserTeam userTeam = new UserTeam(teams.get(i),users.get(j));
-          userTeamRepository.save(userTeam);
-        }
+      for (int i = 0; i < numOfTeamUsers; i++){
+        UserTeam userTeam = new UserTeam(team, users.get(i));
+        userTeamRepository.save(userTeam);
       }
 
-      for (int i = 0; i < 3; i++){
-        if (i == 0) {
-          for (int j = i; j < 14 + i; j++) {
-            Ranking ranking = new Ranking(users.get(j), teams.get(i));
-            ranking.increaseScore(j + 1L);
-            rankingRepository.save(ranking);
-          }
-          for (int j = i + 1; j < 15 + i; j++) {
-            Ranking ranking = new Ranking(users.get(j), teams.get(i));
-            ranking.increaseScore(j + 1L);
-            rankingRepository.save(ranking);
-            ranking.changeCreateAtForTestData(lastMonthDateTime);
-            rankingRepository.save(ranking);
-          }
+      for (int i = 0; i < numOfRankUser; i++) {
+        Ranking ranking = new Ranking(users.get(i), team);
+        if (useSameScore) {
+          ranking.increaseScore(numOfUsers + 0L);
         }
-        else if (i == 1)
-        {
-          for (int j = i; j < 14 + i; j++) {
-            Ranking ranking = new Ranking(users.get(j), teams.get(i));
-            ranking.increaseScore(100L);
-            rankingRepository.save(ranking);
-          }
-          for (int j = i + 1; j < 15 + i; j++) {
-            Ranking ranking = new Ranking(users.get(j), teams.get(i));
-            ranking.increaseScore(100L);
-            rankingRepository.save(ranking);
-            ranking.changeCreateAtForTestData(lastMonthDateTime);
-            rankingRepository.save(ranking);
-          }
+        else {
+          ranking.increaseScore(i + 1L);
         }
-        else if (i== 2)
-        {
-          for (int j = i; j < 5 + i; j++) {
-            Ranking ranking = new Ranking(users.get(j), teams.get(i));
-            ranking.increaseScore(j + 1L);
-            rankingRepository.save(ranking);
-          }
-          for (int j = i + 1; j < 15 + i; j++) {
-            Ranking ranking = new Ranking(users.get(j), teams.get(i));
-            ranking.increaseScore(j + 1L);
-            rankingRepository.save(ranking);
-            ranking.changeCreateAtForTestData(lastMonthDateTime);
-            rankingRepository.save(ranking);
-          }
+        rankingRepository.save(ranking);
+      }
+
+      for (int i = 0; i < numOfRankUser; i++) {
+        Ranking ranking = new Ranking(users.get(i), team);
+        if (useSameScore) {
+          ranking.increaseScore(numOfUsers + 0L);
         }
+        else {
+          ranking.increaseScore(i + 1L);
+        }
+        rankingRepository.save(ranking);
+        ranking.changeCreateAtForTestData(lastMonthDateTime);
+        rankingRepository.save(ranking);
       }
     }
 
     @Test
-    @Transactional(readOnly = true)
-    void findMonthRankingTop10_SuccessTest() throws Exception {
+    @Transactional
+    void Success() throws Exception {
       //given
-      // team1 에 대한 테스트
+      Integer numOfUsers = 20;
+      Integer numOfTeamUsers = 20;
+      Integer numOfRankUsers = 20;
+      Boolean useSameScore = Boolean.FALSE;
+
+      setTimeData();
+      setTestData(numOfUsers, numOfTeamUsers, numOfRankUsers, useSameScore);
 
       //when
-      List<MonthRankingTop10ResponseDto> responseData = rankingRepository.findMonthRankingTop10(teams.get(0).getId(), curMonth);
+      List<MonthRankingResponseDto> responseData = rankingRepository.findMonthRanking(team.getId(), curMonth);
 
       //then
-      Assertions.assertThat(responseData).hasSize(10);
+      Assertions.assertThat(responseData).hasSize(numOfRankUsers);
 
-      for (int i = 0; i < 10; i++){
-        Assertions.assertThat(responseData.get(i).getBojId()).isEqualTo("user"+(14 - i));
-        Assertions.assertThat(responseData.get(i).getScore()).isEqualTo((14 - i) + 0L);
+      for (int i = 0; i < numOfRankUsers; i++){
+        Assertions.assertThat(responseData.get(i).getBojId()).isEqualTo("user"+(numOfRankUsers - i));
+        Assertions.assertThat(responseData.get(i).getScore()).isEqualTo((numOfRankUsers - i) + 0L);
       }
     }
 
     @Test
-    @Transactional(readOnly = true)
-    void findMonthRankingTop10_SameScoreAtRanking() throws Exception {
+    @Transactional
+    void SameScore() throws Exception {
       //given
-      // team2에 대한 테스트
+      Integer numOfUsers = 20;
+      Integer numOfTeamUsers = 20;
+      Integer numOfRankUsers = 20;
+      Boolean useSameScore = Boolean.TRUE;
+
+      setTimeData();
+      setTestData(numOfUsers, numOfTeamUsers, numOfRankUsers, useSameScore);
 
       //when
-      List<MonthRankingTop10ResponseDto> responseData = rankingRepository.findMonthRankingTop10(teams.get(1).getId(), curMonth);
+      List<MonthRankingResponseDto> responseData = rankingRepository.findMonthRanking(team.getId(), curMonth);
 
-      // then
-      Assertions.assertThat(responseData).hasSize(10);
-      for (int i = 0; i < 10; i++) {
-        Assertions.assertThat(responseData.get(i).getBojId()).isEqualTo("user" + (i + 2));
-        Assertions.assertThat(responseData.get(i).getScore()).isEqualTo(100L);
+      //then
+      Assertions.assertThat(responseData).hasSize(numOfRankUsers);
+    }
+
+    @Test
+    @Transactional
+    void LessUserAtRank() throws Exception {
+      //given
+      Integer numOfUsers = 20;
+      Integer numOfTeamUsers = 20;
+      Integer numOfRankUsers = 10;
+      Boolean useSameScore = Boolean.FALSE;
+
+      setTimeData();
+      setTestData(numOfUsers, numOfTeamUsers, numOfRankUsers, useSameScore);
+
+      //when
+      List<MonthRankingResponseDto> responseData = rankingRepository.findMonthRanking(team.getId(), curMonth);
+
+      //then
+      Assertions.assertThat(responseData).hasSize(numOfRankUsers);
+
+      for (int i = 0; i < numOfRankUsers; i++){
+        Assertions.assertThat(responseData.get(i).getBojId()).isEqualTo("user"+(numOfRankUsers - i));
+        Assertions.assertThat(responseData.get(i).getScore()).isEqualTo((numOfRankUsers - i) + 0L);
       }
     }
 
     @Test
-    @Transactional(readOnly = true)
-    void findMonthRankingTop10_LessUserAtRanking() throws Exception {
+    @Transactional
+    void LessUserAtTeam() throws Exception {
       //given
+      Integer numOfUsers = 20;
+      Integer numOfTeamUsers = 10;
+      Integer numOfRankUsers = 10;
+      Boolean useSameScore = Boolean.FALSE;
+
+      setTimeData();
+      setTestData(numOfUsers, numOfTeamUsers, numOfRankUsers, useSameScore);
 
       //when
-      List<MonthRankingTop10ResponseDto> responseData = rankingRepository.findMonthRankingTop10(teams.get(2).getId(), curMonth);
+      List<MonthRankingResponseDto> responseData = rankingRepository.findMonthRanking(team.getId(), curMonth);
 
-      // then
-      Assertions.assertThat(responseData).hasSize(5);
-      for (int i = 0; i < 5; i++){
-        Assertions.assertThat(responseData.get(i).getBojId()).isEqualTo("user"+(7 - i));
-        Assertions.assertThat(responseData.get(i).getScore()).isEqualTo((7 - i) + 0L);
+      //then
+      Assertions.assertThat(responseData).hasSize(numOfRankUsers);
+
+      for (int i = 0; i < numOfRankUsers; i++){
+        Assertions.assertThat(responseData.get(i).getBojId()).isEqualTo("user"+(numOfRankUsers - i));
+        Assertions.assertThat(responseData.get(i).getScore()).isEqualTo((numOfRankUsers - i) + 0L);
       }
     }
 
     @Test
-    @Transactional(readOnly = true)
-    void findMonthRankingTop10_NoUserAtTeam() throws Exception {
+    @Transactional
+    void NoUserAtRanking() throws Exception {
       //given
+      Integer numOfUsers = 20;
+      Integer numOfTeamUsers = 10;
+      Integer numOfRankUsers = 0;
+      Boolean useSameScore = Boolean.FALSE;
+
+      setTimeData();
+      setTestData(numOfUsers, numOfTeamUsers, numOfRankUsers, useSameScore);
 
       //when
-      List<MonthRankingTop10ResponseDto> responseData = rankingRepository.findMonthRankingTop10(teams.get(3).getId(), curMonth);
+      List<MonthRankingResponseDto> responseData = rankingRepository.findMonthRanking(team.getId(), curMonth);
 
-      // then
-      Assertions.assertThat(responseData).isEmpty();
+      //then
+      Assertions.assertThat(responseData).hasSize(numOfRankUsers);
+
+      for (int i = 0; i < numOfRankUsers; i++){
+        Assertions.assertThat(responseData.get(i).getBojId()).isEqualTo("user"+(numOfRankUsers - i));
+        Assertions.assertThat(responseData.get(i).getScore()).isEqualTo((numOfRankUsers - i) + 0L);
+      }
     }
 
     @Test
-    @Transactional(readOnly = true)
-    void findMonthRankingTop10_NoUserAtRanking() throws Exception {
-      //given
-
-      //when
-      List<MonthRankingTop10ResponseDto> responseData = rankingRepository.findMonthRankingTop10(teams.get(4).getId(), curMonth);
-
-      // then
-      Assertions.assertThat(responseData).isEmpty();
-    }
-
-    @Test
-    @Transactional(readOnly = true)
+    @Transactional
     void findMonthRankingTop10_NoTeamTest() throws Exception {
       //given
+      Integer numOfUsers = 20;
+      Integer numOfTeamUsers = 0;
+      Integer numOfRankUsers = 0;
+      Boolean useSameScore = Boolean.FALSE;
+
+      setTimeData();
+      setTestData(numOfUsers, numOfTeamUsers, numOfRankUsers, useSameScore);
 
       //when
-      List<MonthRankingTop10ResponseDto> responseData = rankingRepository.findMonthRankingTop10(teams.get(4).getId() + 10L, curMonth);
+      List<MonthRankingResponseDto> responseData = rankingRepository.findMonthRanking(team.getId(), curMonth);
 
-      // then
-      Assertions.assertThat(responseData).isEmpty();
+      //then
+      Assertions.assertThat(responseData).hasSize(numOfRankUsers);
+
+      for (int i = 0; i < numOfRankUsers; i++){
+        Assertions.assertThat(responseData.get(i).getBojId()).isEqualTo("user"+(numOfRankUsers - i));
+        Assertions.assertThat(responseData.get(i).getScore()).isEqualTo((numOfRankUsers - i) + 0L);
+      }
     }
   }
 }

@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.doReturn;
 
 import com.unsolvedwa.unsolvedwa.domain.ranking.dto.MonthRankingRequestDto;
-import com.unsolvedwa.unsolvedwa.domain.ranking.dto.MonthRankingTop10ResponseDto;
+import com.unsolvedwa.unsolvedwa.domain.ranking.dto.MonthRankingResponseDto;
 import com.unsolvedwa.unsolvedwa.domain.team.Team;
 import com.unsolvedwa.unsolvedwa.domain.team.TeamRepository;
 import java.time.LocalDateTime;
@@ -64,37 +64,39 @@ public class RankingServiceTest{
       @Test
       void rankingIsValid() throws Exception {
         //given
-        List<MonthRankingTop10ResponseDto> monthRankingTop10ResponseDtoList = new ArrayList<>();
+        List<MonthRankingResponseDto> monthRankingResponseDtoList = new ArrayList<>();
         for (int i = 0; i < 10; i++)
         {
-          MonthRankingTop10ResponseDto monthRankingTop10ResponseDto = new MonthRankingTop10ResponseDto(team.getName(),"user"+i,10L - i);
-          monthRankingTop10ResponseDtoList.add(monthRankingTop10ResponseDto);
+          MonthRankingResponseDto monthRankingResponseDto = new MonthRankingResponseDto(team.getName(),"user"+i,10L - i);
+          monthRankingResponseDtoList.add(monthRankingResponseDto);
         }
         MonthRankingRequestDto monthRankingRequestDto = new MonthRankingRequestDto(teamId);
 
         //when
-        doReturn(monthRankingTop10ResponseDtoList).when(rankingRepository).findMonthRankingTop10(teamId, curMonth);
-        List<MonthRankingTop10ResponseDto> responseDtos = rankingService.findMonthRankingAtThisMonth(monthRankingRequestDto);
+        doReturn(monthRankingResponseDtoList).when(rankingRepository).findMonthRanking(teamId, curMonth);
+        List<MonthRankingResponseDto> responseDtos = rankingService.findMonthRankingAtThisMonth(monthRankingRequestDto);
 
         //then
         Assertions.assertThat(responseDtos).hasSize(10);
 
         for (int i = 0; i < 10; i++)
         {
-          Assertions.assertThat(responseDtos.get(i).getBojId()).isEqualTo(monthRankingTop10ResponseDtoList.get(i).getBojId());
-          Assertions.assertThat(responseDtos.get(i).getScore()).isEqualTo(monthRankingTop10ResponseDtoList.get(i).getScore());
+          Assertions.assertThat(responseDtos.get(i).getBojId()).isEqualTo(
+              monthRankingResponseDtoList.get(i).getBojId());
+          Assertions.assertThat(responseDtos.get(i).getScore()).isEqualTo(
+              monthRankingResponseDtoList.get(i).getScore());
         }
       }
 
       @Test
       void rankingIsEmpty() throws Exception {
         //given
-        List<MonthRankingTop10ResponseDto> monthRankingTop10ResponseDtoList = new ArrayList<>();
+        List<MonthRankingResponseDto> monthRankingResponseDtoList = new ArrayList<>();
         MonthRankingRequestDto monthRankingRequestDto = new MonthRankingRequestDto(teamId);
 
         //when
-        doReturn(monthRankingTop10ResponseDtoList).when(rankingRepository).findMonthRankingTop10(teamId, curMonth);
-        List<MonthRankingTop10ResponseDto> responseDtos = rankingService.findMonthRankingAtThisMonth(monthRankingRequestDto);
+        doReturn(monthRankingResponseDtoList).when(rankingRepository).findMonthRanking(teamId, curMonth);
+        List<MonthRankingResponseDto> responseDtos = rankingService.findMonthRankingAtThisMonth(monthRankingRequestDto);
 
         // then
         Assertions.assertThat(responseDtos).isEmpty();
