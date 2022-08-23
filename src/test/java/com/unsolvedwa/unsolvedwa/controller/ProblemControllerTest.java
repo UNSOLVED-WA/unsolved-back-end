@@ -45,10 +45,10 @@ public class ProblemControllerTest {
     @Test
     void Sucess() throws Exception {
       //given
-      List<UnsolvedProblemDto> unsolvedProblemDtoList = new ArrayList<>();
+      List<UnsolvedProblemResponseDto> unsolvedProblemResponseDtoList = new ArrayList<>();
 
       //when
-      given(problemService.findUnsolvedProblemByTeamAndTier(any())).willThrow(unsolvedProblemDtoList);
+      given(problemService.findUnsolvedProblemByTeamAndTier(any())).willThrow(unsolvedProblemResponseDtoList);
 
       // then
       mockMvc.perform(get("/problems/unsolved/" + teamId + "/" + tier))
