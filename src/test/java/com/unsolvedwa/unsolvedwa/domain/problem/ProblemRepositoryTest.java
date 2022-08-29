@@ -1,0 +1,193 @@
+package com.unsolvedwa.unsolvedwa.domain.problem;
+
+import com.unsolvedwa.unsolvedwa.domain.team.Team;
+import com.unsolvedwa.unsolvedwa.domain.team.TeamRepository;
+import com.unsolvedwa.unsolvedwa.domain.user.User;
+import com.unsolvedwa.unsolvedwa.domain.user.UserRepository;
+import com.unsolvedwa.unsolvedwa.domain.userteam.UserTeam;
+import com.unsolvedwa.unsolvedwa.domain.userteam.UserTeamRepository;
+import java.util.List;
+import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
+
+@SpringBootTest
+@Transactional
+public class ProblemRepositoryTest {
+
+  @Autowired
+  ProblemRepository problemRepository;
+  @Autowired
+  TeamRepository teamRepository;
+  @Autowired
+  UserRepository userRepository;
+  @Autowired
+  UserTeamRepository userTeamRepository;
+
+  @Nested
+  class FindUnsolvedProblemByTeamIdAndTier{
+    List<User> users;
+    List<Team> teams;
+    List<Problem> problems;
+
+    void setTestData(Long numOfProblems, Long numOfTeams, Long numOfUsers, Long numOfSolvedProblemByEachUser, Long tier)
+    {
+      for (int i = 0; i < numOfUsers; i++) {
+        User user = new User("user"+ (i + 1));
+        userRepository.save(user);
+      }
+      users = userRepository.findAll();
+
+      for (int i = 0; i < numOfTeams; i++) {
+        Team team = new Team("team");
+        teamRepository.save(team);
+      }
+      teams = teamRepository.findAll();
+
+      for (int i = 0; i < numOfTeams; i++) {
+        for (int j = 0; j < numOfUsers - i) {
+          UserTeam userTeam = new UserTeam(teams.get(i), users.get(j));
+          userTeamRepository.save(userTeam);
+        }
+      }
+
+      for (int i = 0; i < numOfProblems; i++) {
+        Problem problem = new Problem(0L + i, "problem" + i, tier);
+        User solvingUser = users.get(i/numOfSolvedProblemByEachUser.intValue());
+        solvingUser.solveProblem(problem);
+        problemRepository.save(problem);
+      }
+      problems = problemRepository.findAll();
+    }
+
+    //문제 10문제
+    //팀 5개
+    //유저 5명
+    // 팀 1 유저 5명, 팀 2 유저 4명, 팀 3 유저 3명, 팀 4 유저 2명, 팀 5 유저 1명
+    //유저들이 각 1문제씩 총 5문제 품
+    //기대 리턴 : 팀 1 안푼 문제 5, 팀 2 안푼 문제 6, 팀 3 안푼 문제 7, 팀 4 안푼 문제 8, 팀 5 안푼 문제 9
+
+    @Test
+    void success() throws Exception {
+      //given
+      Long numOfProblems = 10L;
+      Long numOfTeams = 5L;
+      Long numOfUsers = 5L;
+      Long numOfSolvedProblemByEachUser = 1L;
+      Long tier = 1L;
+
+      setTestData(numOfProblems, numOfTeams, numOfUsers, numOfSolvedProblemByEachUser, tier);
+
+      //when
+      // then
+      for (int i = 0; i < numOfTeams; i++)
+      {
+        List<UnsolvedProblemResponseDto> unsolvedProblemResponseDtoList = problemRepository.findUnsolvedProblemByTeamIdAndTier(teams.get(i), tier);
+        Long curNumOfSolvedProblem = numOfProblems - numOfTeams * numOfSolvedProblemByEachUser + i * numOfSolvedProblemByEachUser;
+        Assertions.assertThat(unsolvedProblemResponseDtoList).hasSize(curNumOfSolvedProblem);
+        for (int j = 0; j < curNumOfSolvedProblem; j++){
+          Assertions.assertThat(unsolvedProblemResponseDtoList.get(j).getTitle()).isEqualTo(problems.get(j + numOfTeams.intValue() * numOfSolvedProblemByEachUser.intValue() + i * numOfSolvedProblemByEachUser.intValue() - 1).getTitle());
+        }
+      }
+    }
+
+    @Test
+    void zeroSolve() throws Exception {
+      //given
+      Long numOfProblems = 10L;
+      Long numOfTeams = 5L;
+      Long numOfUsers = 5L;
+      Long numOfSolvedProblemByEachUser = 1L;
+      Long tier = 0L;
+
+      setTestData(numOfProblems, numOfTeams, numOfUsers, numOfSolvedProblemByEachUser, tier);
+
+      //when
+      // then
+      for (int i = 0; i < numOfTeams; i++)
+      {
+        List<UnsolvedProblemResponseDto> unsolvedProblemResponseDtoList = problemRepository.findUnsolvedProblemByTeamIdAndTier(teams.get(i), tier);
+        Long curNumOfSolvedProblem = numOfProblems - numOfTeams * numOfSolvedProblemByEachUser + i * numOfSolvedProblemByEachUser;
+        Assertions.assertThat(unsolvedProblemResponseDtoList).hasSize(curNumOfSolvedProblem);
+        for (int j = 0; j < curNumOfSolvedProblem; j++){
+          Assertions.assertThat(unsolvedProblemResponseDtoList.get(j).getTitle()).isEqualTo(problems.get(j + numOfTeams.intValue() * numOfSolvedProblemByEachUser.intValue() + i * numOfSolvedProblemByEachUser.intValue() - 1).getTitle());
+        }
+      }
+    }
+
+    @Test
+    void team1AllSolve() throws Exception {
+      //given
+      Long numOfProblems = 10L;
+      Long numOfTeams = 5L;
+      Long numOfUsers = 5L;
+      Long numOfSolvedProblemByEachUser = 1L;
+      Long tier = 2L;
+
+      setTestData(numOfProblems, numOfTeams, numOfUsers, numOfSolvedProblemByEachUser, tier);
+
+      //when
+      // then
+      for (int i = 0; i < numOfTeams; i++)
+      {
+        List<UnsolvedProblemResponseDto> unsolvedProblemResponseDtoList = problemRepository.findUnsolvedProblemByTeamIdAndTier(teams.get(i), tier);
+        Long curNumOfSolvedProblem = numOfProblems - numOfTeams * numOfSolvedProblemByEachUser + i * numOfSolvedProblemByEachUser;
+        Assertions.assertThat(unsolvedProblemResponseDtoList).hasSize(curNumOfSolvedProblem);
+        for (int j = 0; j < curNumOfSolvedProblem; j++){
+          Assertions.assertThat(unsolvedProblemResponseDtoList.get(j).getTitle()).isEqualTo(problems.get(j + numOfTeams.intValue() * numOfSolvedProblemByEachUser.intValue() + i * numOfSolvedProblemByEachUser.intValue() - 1).getTitle());
+        }
+      }
+    }
+
+    @Test
+    void zeroUser() throws Exception {
+      //given
+      Long numOfProblems = 10L;
+      Long numOfTeams = 5L;
+      Long numOfUsers = 0L;
+      Long numOfSolvedProblemByEachUser = 0L;
+      Long tier = 1L;
+
+      setTestData(numOfProblems, numOfTeams, numOfUsers, numOfSolvedProblemByEachUser, tier);
+
+      //when
+      // then
+      for (int i = 0; i < numOfTeams; i++)
+      {
+        List<UnsolvedProblemResponseDto> unsolvedProblemResponseDtoList = problemRepository.findUnsolvedProblemByTeamIdAndTier(teams.get(i), tier);
+        Long curNumOfSolvedProblem = numOfProblems - numOfTeams * numOfSolvedProblemByEachUser + i * numOfSolvedProblemByEachUser;
+        Assertions.assertThat(unsolvedProblemResponseDtoList).hasSize(curNumOfSolvedProblem);
+        for (int j = 0; j < curNumOfSolvedProblem; j++){
+          Assertions.assertThat(unsolvedProblemResponseDtoList.get(j).getTitle()).isEqualTo(problems.get(j + numOfTeams.intValue() * numOfSolvedProblemByEachUser.intValue() + i * numOfSolvedProblemByEachUser.intValue() - 1).getTitle());
+        }
+      }
+    }
+
+    @Test
+    void zeroProblem() throws Exception {
+      //given
+      Long numOfProblems = 0L;
+      Long numOfTeams = 5L;
+      Long numOfUsers = 5L;
+      Long numOfSolvedProblemByEachUser = 0L;
+      Long tier = 1L;
+
+      setTestData(numOfProblems, numOfTeams, numOfUsers, numOfSolvedProblemByEachUser, tier);
+
+      //when
+      // then
+      for (int i = 0; i < numOfTeams; i++)
+      {
+        List<UnsolvedProblemResponseDto> unsolvedProblemResponseDtoList = problemRepository.findUnsolvedProblemByTeamIdAndTier(teams.get(i), tier);
+        Long curNumOfSolvedProblem = numOfProblems - numOfTeams * numOfSolvedProblemByEachUser + i * numOfSolvedProblemByEachUser;
+        Assertions.assertThat(unsolvedProblemResponseDtoList).hasSize(curNumOfSolvedProblem);
+        for (int j = 0; j < curNumOfSolvedProblem; j++){
+          Assertions.assertThat(unsolvedProblemResponseDtoList.get(j).getTitle()).isEqualTo(problems.get(j + numOfTeams.intValue() * numOfSolvedProblemByEachUser.intValue() + i * numOfSolvedProblemByEachUser.intValue() - 1).getTitle());
+        }
+      }
+    }
+  }
+}
