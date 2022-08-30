@@ -113,6 +113,37 @@ class RankingRepositoryTest {
       }
     }
 
+    @Test
+    @Transactional(readOnly = true)
+    void findAllRanking_AllSameScore() throws Exception {
+      //given
+      //team2 test
+
+      //when
+      List<AllRankingResponseDto> responseData = rankingRepository.AllRanking(teams.get(1).getId());
+      //then
+      Assertions.assertThat(responseData).hasSize(10);
+
+      for (int i = 0; i < 10; i++){
+        Assertions.assertThat(responseData.get(i).getBojId()).isEqualTo("user"+(i + 1l));
+        Assertions.assertThat(responseData.get(i).getScore()).isEqualTo(10l);
+      }
+    }
+
+    @Test
+    @Transactional(readOnly = true)
+    void findAllRanking_NoUserAtTeam() throws Exception {
+      //given
+      //team3 test
+
+      //when
+      List<AllRankingResponseDto> responseData = rankingRepository.AllRanking(teams.get(2).getId());
+      //then
+      Assertions.assertThat(responseData.isEmpty());
+    }
+
+
+
   }
   @Nested
   @TestInstance(Lifecycle.PER_CLASS)
