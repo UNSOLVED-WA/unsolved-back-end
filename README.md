@@ -63,4 +63,15 @@
 > https://gitmoji.dev/
 
 > gitmoji 이외에 타입과 메시지를 포함하여 작성
+> 
 > {emoji} {type} : {message}
+
+## 💻 Usage
+
+> 루트 디렉토리에 .env 파일 생성
+
+> env 파일에 DB_NAME, DB_PASSWORD 설정
+
+> docker-compose up
+
+> http://localhost:8080/swagger-ui/index.html 접속하여 swagger api 명세 확인하여 서버 실행 확인
