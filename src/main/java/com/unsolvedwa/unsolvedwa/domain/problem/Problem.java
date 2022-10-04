@@ -20,7 +20,6 @@ public class Problem extends BaseTimeEntity {
   @Column(name = "problem_id")
   private Long id;
 
-  @Column(unique = true)
   private Long problemNumber;
 
   private String title;
