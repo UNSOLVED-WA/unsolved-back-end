@@ -3,11 +3,12 @@ package com.unsolvedwa.unsolvedwa.domain.problem;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.doReturn;
 
-import com.unsolvedwa.unsolvedwa.domain.ranking.dto.MonthRankingRequestDto;
+import com.unsolvedwa.unsolvedwa.domain.problem.dto.ProblemResponseDto;
 import com.unsolvedwa.unsolvedwa.domain.team.Team;
 import com.unsolvedwa.unsolvedwa.domain.team.TeamRepository;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -47,10 +48,17 @@ public class ProblemServiceTest {
     @Nested
     class TeamIsValid{
       Team team;
+      Long problemId;
+      String problemTitle;
+      Long tier;
 
       @BeforeEach
       void beforEach() throws Exception {
         LocalDateTime cur = LocalDateTime.now();
+
+        problemId = 1L;
+        problemTitle = "problem";
+        tier = 1L;
 
         this.team = new Team("teamName");
         optionalTeam = Optional.of(team);
@@ -60,37 +68,37 @@ public class ProblemServiceTest {
       @Test
       void Success() throws Exception {
         //given
-        List<UnsolvedProblemResponseDto> unsolvedProblemResponseDtoList = new ArrayList<>();
-        for (int i = 0; i < 10; i++)
+        List<ProblemResponseDto> unsolvedProblemResponseDtoList = new ArrayList<>();
+        for (int i = 1; i <= 10; i++)
         {
-          UnsolvedProblemResponseDto unsolvedProblemResponseDto = new UnsolvedProblemResponseDto(problemId, problemTitle, tier);
-          unsolvedProblemResponseDtoList.add(unsolvedProblemResponseDto);
+          ProblemResponseDto problemResponseDto = new ProblemResponseDto(problemId, problemTitle + i, tier);
+          unsolvedProblemResponseDtoList.add(problemResponseDto);
         }
 
         //when
         doReturn(unsolvedProblemResponseDtoList).when(problemRepository).findUnsolvedProblemsByTeamAndTier(teamId, tier);
-        List<UnsolvedProblemResponseDto> responseDtoList = problemService.findUnsovledProblemsByTeamAndTier(teamId, tier);
+        List<ProblemResponseDto> responseDtoList = problemService.findUnsolvedProblemsByTeamAndTier(teamId, tier);
 
         // then
         Assertions.assertThat(responseDtoList).hasSize(10);
 
         for (int i = 0; i < 10; i++)
         {
-          Assertions.assertThat(responseDtoList.get(i).getBojId()).isEqualTo(
-              unsolvedProblemResponseDtoList.get(i).getBojId());
-          Assertions.assertThat(responseDtoList.get(i).getScore()).isEqualTo(
-              unsolvedProblemResponseDtoList.get(i).getScore());
+          Assertions.assertThat(responseDtoList.get(i).getProblemId()).isEqualTo(
+              unsolvedProblemResponseDtoList.get(i).getProblemId());
+          Assertions.assertThat(responseDtoList.get(i).getTier()).isEqualTo(
+              unsolvedProblemResponseDtoList.get(i).getTier());
         }
       }
 
       @Test
       void AllSolvedAtThisTier() throws Exception {
         //given
-        List<UnsolvedProblemResponseDto> unsolvedProblemResponseDtoList = new ArrayList<>();
+        List<ProblemResponseDto> unsolvedProblemResponseDtoList = new ArrayList<>();
 
         //when
         doReturn(unsolvedProblemResponseDtoList).when(problemRepository).findUnsolvedProblemsByTeamAndTier(teamId, tier);
-        List<UnsolvedProblemResponseDto> responseDtoList = problemService.findUnsovledProblemsByTeamAndTier(teamId, tier);
+        List<ProblemResponseDto> responseDtoList = problemService.findUnsolvedProblemsByTeamAndTier(teamId, tier);
 
         // then
         Assertions.assertThat(responseDtoList).isEmpty();
@@ -112,7 +120,7 @@ public class ProblemServiceTest {
         //when
         // then
         assertThrows(NotFoundException.class, ()->{
-          problemService.findUnsovledProblemsByTeamAndTier(teamId, tier);
+          problemService.findUnsolvedProblemsByTeamAndTier(teamId, tier);
         });
       }
     }
