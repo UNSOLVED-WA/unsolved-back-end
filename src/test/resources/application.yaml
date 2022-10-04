@@ -9,7 +9,7 @@ spring:
         dialect: org.hibernate.dialect.MySQL8Dialect
   datasource:
     url: jdbc:mysql://localhost:3306/unsolved_wa?useSSL=false&allowPublicKeyRetrieval=true
-    username: root
+    username: developer
     password: 1234
 
 sample:
