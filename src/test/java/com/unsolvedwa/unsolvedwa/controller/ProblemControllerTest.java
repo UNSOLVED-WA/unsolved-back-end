@@ -6,8 +6,10 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.unsolvedwa.unsolvedwa.domain.problem.ProblemService;
+import com.unsolvedwa.unsolvedwa.domain.problem.dto.ProblemResponseDto;
 import com.unsolvedwa.unsolvedwa.domain.team.Team;
 import java.util.ArrayList;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -21,7 +23,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
 @ExtendWith(SpringExtension.class)
-@WebMvcTest(RankingController.class)
+@WebMvcTest(ProblemController.class)
 @MockBean(JpaMetamodelMappingContext.class)
 public class ProblemControllerTest {
   @Autowired
@@ -37,6 +39,7 @@ public class ProblemControllerTest {
   @BeforeEach
   void beforeEach() throws Exception {
     teamId = 1L;
+    tier = 1L;
     team = new Team("teamName");
   }
 
@@ -45,10 +48,11 @@ public class ProblemControllerTest {
     @Test
     void Sucess() throws Exception {
       //given
-      List<UnsolvedProblemResponseDto> unsolvedProblemResponseDtoList = new ArrayList<>();
+      List<ProblemResponseDto> problemResponseDtoList = new ArrayList<>();
 
       //when
-      given(problemService.findUnsolvedProblemByTeamAndTier(any())).willThrow(unsolvedProblemResponseDtoList);
+      given(problemService.findUnsolvedProblemsByTeamAndTier(any(), any()))
+          .willReturn(problemResponseDtoList);
 
       // then
       mockMvc.perform(get("/problems/unsolved/" + teamId + "/" + tier))
@@ -60,7 +64,8 @@ public class ProblemControllerTest {
       //given
 
       //when
-      given(problemService.findUnsolvedProblemByTeamAndTier(any())).willThrow(new NotFoundException());
+      given(problemService.findUnsolvedProblemsByTeamAndTier(any(), any()))
+          .willThrow(new NotFoundException());
 
       // then
       mockMvc.perform(get("/problems/unsolved/" + teamId + "/" + tier))
@@ -72,7 +77,8 @@ public class ProblemControllerTest {
       //given
 
       //when
-      given(problemService.findUnsolvedProblemByTeamAndTier(any())).willThrow(new NotFoundException());
+      given(problemService.findUnsolvedProblemsByTeamAndTier(any(), any()))
+          .willThrow(new NotFoundException());
 
       // then
       mockMvc.perform(get("/problems/unsolved/" + teamId + "/" + tier))
