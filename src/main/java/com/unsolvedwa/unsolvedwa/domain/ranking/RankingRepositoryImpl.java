@@ -27,4 +27,16 @@ public class RankingRepositoryImpl implements RankingRepositoryCustom{
             .orderBy(ranking.score.desc())
             .fetch();
     }
+
+    public List<MonthRankingResponseDto> findMonthRankingByTeamAndUser(Long teamId, Long userId, LocalDateTime startTime){
+        return queryFactory
+            .select(new QMonthRankingResponseDto(ranking.team.name, ranking.user.bojId, ranking.score))
+            .from(ranking)
+            .where(ranking.createAt.after(startTime))
+            .innerJoin(ranking.team, team)
+            .on(ranking.team.id.eq(teamId))
+            .innerJoin(ranking.user, user)
+            .on(ranking.user.id.eq(userId))
+            .fetch();
+    }
 }
