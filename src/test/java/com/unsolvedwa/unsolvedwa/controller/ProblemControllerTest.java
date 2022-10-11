@@ -3,10 +3,12 @@ package com.unsolvedwa.unsolvedwa.controller;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.unsolvedwa.unsolvedwa.domain.problem.ProblemService;
 import com.unsolvedwa.unsolvedwa.domain.problem.dto.ProblemResponseDto;
+import com.unsolvedwa.unsolvedwa.domain.problem.dto.SolvingProblemResponseDto;
 import com.unsolvedwa.unsolvedwa.domain.team.Team;
 import java.util.ArrayList;
 import java.util.List;
@@ -44,9 +46,76 @@ public class ProblemControllerTest {
   }
 
   @Nested
+  class SolvingProblem{
+    @Test
+    void Success() throws Exception {
+      //given
+      //when
+      Long userId = 1L;
+      Long problemId = 1L;
+      Long problemNumber = 1L;
+      String problemTitle = "problem";
+      Long score = 1L;
+
+      List<SolvingProblemResponseDto> solvingProblemResponseDtoList = new ArrayList<>();
+
+      for (int i = 0; i < 3; i++) {
+        String teamName = "team" + (i + 1);
+        SolvingProblemResponseDto solvingProblemResponseDto = new SolvingProblemResponseDto(
+            problemId, problemTitle, tier, score, teamName);
+        solvingProblemResponseDtoList.add(solvingProblemResponseDto);
+      }
+
+      given(problemService.solveProblem(userId, problemNumber))
+          .willReturn(solvingProblemResponseDtoList);
+
+      // then
+      mockMvc.perform(post("/problems/solving")
+              .param("user_id", userId.toString())
+              .param("problem_number", problemNumber.toString()))
+          .andExpect(status().isOk());
+    }
+
+    @Test
+    void NoUser() throws Exception {
+      //given
+      //when
+      Long userId = 1L;
+      Long problemNumber = 1L;
+
+      given(problemService.solveProblem(userId, problemNumber))
+          .willThrow(new NotFoundException());
+
+      // then
+      mockMvc.perform(post("/problems/solving")
+              .param("user_id", userId.toString())
+              .param("problem_number", problemNumber.toString()))
+          .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void NoProblem() throws Exception {
+      //given
+      //when
+      Long userId = 1L;
+      Long problemNumber = 1L;
+
+      given(problemService.solveProblem(userId, problemNumber))
+          .willThrow(new NotFoundException());
+
+      // then
+      mockMvc.perform(post("/problems/solving")
+              .param("user_id", userId.toString())
+              .param("problem_number", problemNumber.toString()))
+          .andExpect(status().isNotFound());
+    }
+
+  }
+
+  @Nested
   class GetUnsolvedTier{
     @Test
-    void Sucess() throws Exception {
+    void Success() throws Exception {
       //given
       List<ProblemResponseDto> problemResponseDtoList = new ArrayList<>();
 
