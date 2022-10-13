@@ -1,20 +1,20 @@
 package com.unsolvedwa.unsolvedwa.domain.problemteam;
 
 import java.util.List;
-import java.util.ArrayList;
+import java.util.Random;
 
+import static com.unsolvedwa.unsolvedwa.domain.problem.QProblem.problem;
+import static com.unsolvedwa.unsolvedwa.domain.problemteam.QProblemTeam.problemTeam;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
+import com.unsolvedwa.unsolvedwa.domain.problem.dto.ProblemResponseDto;
+import com.unsolvedwa.unsolvedwa.domain.problem.dto.QProblemResponseDto;
 
-import com.unsolvedwa.unsolvedwa.domain.problem.Problem;
-import com.unsolvedwa.unsolvedwa.domain.problem.dto.UnsolvedDto;
-import static com.unsolvedwa.unsolvedwa.domain.problem.QProblem.problem;
-import static com.unsolvedwa.unsolvedwa.domain.problemteam.QProblem.problemteam;
 
 @RequiredArgsConstructor
 public class ProblemTeamRepositoryImpl implements ProblemTeamRepositoryCustom {
 
-  private JPAQueryFactory queryFactory;
+	private final JPAQueryFactory queryFactory;
 
   @Override
   public ProblemTeam[] solvingProblem(Long user_id, Long boj_id) {
@@ -23,28 +23,30 @@ public class ProblemTeamRepositoryImpl implements ProblemTeamRepositoryCustom {
   }
   
   @Override
-  public List<Problem> findUnsolvedProblem(Long tier, Long team_id) {
-	/*
-	 * 1. 해당 그룹에서 풀지않은 문제 개수 조회
-	 * 2. max(개수)에서 랜덤수 추출
-	 * 3. 랜덤수의 row에 해당하는 문제 조회
-	 */
-	
-	// [Temp] 확인용
-	List<Problem> testList = new ArrayList<>();
-	Long t = (long) 1;
-	Problem dto = new Problem(t, "testTitle", t);
-	testList.add(dto);
+  public ProblemResponseDto findUnsolvedRandomProblems(Long teamId, Long tier) {
+  	
+  	Random random = new Random(System.currentTimeMillis());
+  	List<Long> count;
+  	int randomNum;
+  	
+  	count = queryFactory
+  		        .select(problem.id.count())
+  		        .from(problem)
+  		        .leftJoin(problem.problemTeams, problemTeam)
+  		        .on(problemTeam.team.id.eq(teamId))
+  		        .where(problemTeam.id.isNull().and(problem.tier.eq(tier)))
+  		        .fetch();
+  	randomNum = random.nextInt(count.get(0).intValue()) + 1; 	// 0 <= value < max
 
-	
-	/*
-	 queryFactory
-	 	.select(new UnsolvedDto())
-	 	.from(problem)
-	 	.leftjoin(problemteam)
-	 	.on(problem.id.eq(problemteam.problem_id))
-	 	.where(!problemteam.problem_team_id)
-	*/
-	return testList;
+  	return queryFactory
+  			.select(new QProblemResponseDto(problem.id, problem.title, problem.tier))
+  		    .from(problem)
+  		    .leftJoin(problem.problemTeams, problemTeam)
+  		    .on(problemTeam.team.id.eq(teamId))
+  		    .where(problemTeam.id.isNull().and(problem.tier.eq(tier)))
+  		    .limit(1)
+  		    .offset(randomNum)
+  		    .fetch()
+  		    .get(0);
   }
 }

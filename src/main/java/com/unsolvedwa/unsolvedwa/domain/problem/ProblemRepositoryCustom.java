@@ -2,6 +2,8 @@ package com.unsolvedwa.unsolvedwa.domain.problem;
 
 import java.util.List;
 
-public interface ProblemRepositoryCustom {
+import com.unsolvedwa.unsolvedwa.domain.problem.dto.ProblemResponseDto;
 
+public interface ProblemRepositoryCustom {
+	
 }

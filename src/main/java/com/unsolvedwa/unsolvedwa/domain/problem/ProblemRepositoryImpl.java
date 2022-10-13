@@ -8,4 +8,6 @@ public class ProblemRepositoryImpl implements ProblemRepositoryCustom {
 
   private final JPAQueryFactory queryFactory;
 
+
+
 }

@@ -2,6 +2,7 @@ package com.unsolvedwa.unsolvedwa.controller;
 
 import com.unsolvedwa.unsolvedwa.domain.problem.Problem;
 import com.unsolvedwa.unsolvedwa.domain.problem.ProblemService;
+import com.unsolvedwa.unsolvedwa.domain.problem.dto.ProblemResponseDto;
 import com.unsolvedwa.unsolvedwa.domain.problemteam.ProblemTeamService;
 import com.unsolvedwa.unsolvedwa.domain.problemteam.dto.ScoreDto;
 import io.swagger.v3.oas.annotations.Operation;
@@ -37,10 +38,12 @@ public class ProblemController {
   }
 
   @Operation(description = "unsolved 리스트 조회")
-  @GetMapping(value = "/{team_id}/{tier}")
-  public ResponseEntity<List<Problem>> getUnsolvedProblems(@Parameter @PathVariable Long team_id,
+  @GetMapping(value = "/{teamId}/{tier}")
+  public ResponseEntity<ProblemResponseDto> getUnsolvedProblems(@Parameter @PathVariable Long teamId,
       @Parameter @PathVariable Long tier) {
-    //TODO: service 구현하여 작성
-    return ResponseEntity.ok(new ArrayList<>());
+	 
+	  return ResponseEntity.ok(problemTeamService.findUnsolvedRandomProblems(teamId, tier));
+	 
+    
   }
 }
