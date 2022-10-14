@@ -6,8 +6,10 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.google.gson.Gson;
 import com.unsolvedwa.unsolvedwa.domain.problem.ProblemService;
 import com.unsolvedwa.unsolvedwa.domain.problem.dto.ProblemResponseDto;
+import com.unsolvedwa.unsolvedwa.domain.problem.dto.SolvingProblemRequestDto;
 import com.unsolvedwa.unsolvedwa.domain.problem.dto.SolvingProblemResponseDto;
 import com.unsolvedwa.unsolvedwa.domain.team.Team;
 import java.util.ArrayList;
@@ -21,6 +23,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -69,10 +72,14 @@ public class ProblemControllerTest {
       given(problemService.solveProblem(userId, problemNumber))
           .willReturn(solvingProblemResponseDtoList);
 
+      SolvingProblemRequestDto solvingProblemRequestDto = new SolvingProblemRequestDto(userId, problemNumber);
+      Gson gson = new Gson();
+      String content = gson.toJson(solvingProblemRequestDto);
+
       // then
       mockMvc.perform(post("/problems/solving")
-              .param("user_id", userId.toString())
-              .param("problem_number", problemNumber.toString()))
+              .contentType(MediaType.APPLICATION_JSON)
+              .content(content))
           .andExpect(status().isOk());
     }
 
@@ -86,10 +93,14 @@ public class ProblemControllerTest {
       given(problemService.solveProblem(userId, problemNumber))
           .willThrow(new NotFoundException());
 
+      SolvingProblemRequestDto solvingProblemRequestDto = new SolvingProblemRequestDto(userId, problemNumber);
+      Gson gson = new Gson();
+      String content = gson.toJson(solvingProblemRequestDto);
+
       // then
       mockMvc.perform(post("/problems/solving")
-              .param("user_id", userId.toString())
-              .param("problem_number", problemNumber.toString()))
+              .contentType(MediaType.APPLICATION_JSON)
+              .content(content))
           .andExpect(status().isNotFound());
     }
 
@@ -103,10 +114,14 @@ public class ProblemControllerTest {
       given(problemService.solveProblem(userId, problemNumber))
           .willThrow(new NotFoundException());
 
+      SolvingProblemRequestDto solvingProblemRequestDto = new SolvingProblemRequestDto(userId, problemNumber);
+      Gson gson = new Gson();
+      String content = gson.toJson(solvingProblemRequestDto);
+
       // then
       mockMvc.perform(post("/problems/solving")
-              .param("user_id", userId.toString())
-              .param("problem_number", problemNumber.toString()))
+              .contentType(MediaType.APPLICATION_JSON)
+              .content(content))
           .andExpect(status().isNotFound());
     }
 
