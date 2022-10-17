@@ -15,6 +15,7 @@ import com.unsolvedwa.unsolvedwa.domain.problem.dto.QProblemResponseDto;
 @RequiredArgsConstructor
 public class ProblemTeamRepositoryImpl implements ProblemTeamRepositoryCustom {
 
+
 	private final JPAQueryFactory queryFactory;
 
   @Override
@@ -66,4 +67,5 @@ public class ProblemTeamRepositoryImpl implements ProblemTeamRepositoryCustom {
 //  		    .fetch()
 //  		    .get(0);
   }
+
 }

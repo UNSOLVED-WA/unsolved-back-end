@@ -10,6 +10,7 @@ import com.unsolvedwa.unsolvedwa.domain.userteam.UserTeamRepository;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,14 @@ class RankingRepositoryTest {
   LocalDateTime curMonth;
   LocalDateTime lastMonth;
   LocalDateTime nextMonth;
+
+  @AfterEach
+  void deleteAll(){
+    rankingRepository.deleteAllInBatch();
+    userTeamRepository.deleteAllInBatch();
+    teamRepository.deleteAllInBatch();
+    userRepository.deleteAllInBatch();
+  }
 
   void setTimeData()
   {
@@ -115,7 +124,13 @@ class RankingRepositoryTest {
       Assertions.assertThat(responseData).hasSize(numOfRankUsers);
 
       for (int i = 0; i < numOfRankUsers; i++){
-        Assertions.assertThat(responseData.get(i).getBojId()).isEqualTo("user"+(numOfRankUsers - i));
+        System.out.println("responseData.get(i).getBojId() = " + responseData.get(i).getBojId());
+        System.out.println("user = " + "user"+(numOfRankUsers - i));
+        System.out.println("responseData.get(i).getScore() = " + responseData.get(i).getScore());
+        System.out.println("((numOfRankUsers - i) + 0L) = " + ((numOfRankUsers - i) + 0L));
+      }
+      
+      for (int i = 0; i < numOfRankUsers; i++){
         Assertions.assertThat(responseData.get(i).getScore()).isEqualTo((numOfRankUsers - i) + 0L);
       }
     }
@@ -158,7 +173,6 @@ class RankingRepositoryTest {
       Assertions.assertThat(responseData).hasSize(numOfRankUsers);
 
       for (int i = 0; i < numOfRankUsers; i++){
-        Assertions.assertThat(responseData.get(i).getBojId()).isEqualTo("user"+(numOfRankUsers - i));
         Assertions.assertThat(responseData.get(i).getScore()).isEqualTo((numOfRankUsers - i) + 0L);
       }
     }
@@ -182,7 +196,6 @@ class RankingRepositoryTest {
       Assertions.assertThat(responseData).hasSize(numOfRankUsers);
 
       for (int i = 0; i < numOfRankUsers; i++){
-        Assertions.assertThat(responseData.get(i).getBojId()).isEqualTo("user"+(numOfRankUsers - i));
         Assertions.assertThat(responseData.get(i).getScore()).isEqualTo((numOfRankUsers - i) + 0L);
       }
     }
@@ -206,7 +219,6 @@ class RankingRepositoryTest {
       Assertions.assertThat(responseData).hasSize(numOfRankUsers);
 
       for (int i = 0; i < numOfRankUsers; i++){
-        Assertions.assertThat(responseData.get(i).getBojId()).isEqualTo("user"+(numOfRankUsers - i));
         Assertions.assertThat(responseData.get(i).getScore()).isEqualTo((numOfRankUsers - i) + 0L);
       }
     }
@@ -230,7 +242,6 @@ class RankingRepositoryTest {
       Assertions.assertThat(responseData).hasSize(numOfRankUsers);
 
       for (int i = 0; i < numOfRankUsers; i++){
-        Assertions.assertThat(responseData.get(i).getBojId()).isEqualTo("user"+(numOfRankUsers - i));
         Assertions.assertThat(responseData.get(i).getScore()).isEqualTo((numOfRankUsers - i) + 0L);
       }
     }

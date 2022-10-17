@@ -1,9 +1,12 @@
 spring:
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     show-sql: true
     generate-ddl: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5Dialect
   datasource:
     url: jdbc:mysql://localhost:3306/unsolved_wa?useSSL=false&allowPublicKeyRetrieval=true
     username: developer

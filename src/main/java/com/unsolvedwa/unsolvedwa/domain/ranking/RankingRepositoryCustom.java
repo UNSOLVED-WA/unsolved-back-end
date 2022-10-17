@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface RankingRepositoryCustom {
   public List<MonthRankingResponseDto> findMonthRanking(Long teamId, LocalDateTime startTime);
+  public List<MonthRankingResponseDto> findMonthRankingByTeamAndUser(Long teamId, Long userId, LocalDateTime startTime);
 }
