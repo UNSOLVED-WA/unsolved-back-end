@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @Tag(name = "ProblemController")
@@ -41,8 +42,10 @@ public class ProblemController {
   @GetMapping(value = "/{teamId}/{tier}")
   public ResponseEntity<ProblemResponseDto> getUnsolvedProblems(@Parameter @PathVariable Long teamId,
       @Parameter @PathVariable Long tier) {
-	 
-	  return ResponseEntity.ok(problemTeamService.findUnsolvedRandomProblems(teamId, tier));
+	  Optional<ProblemResponseDto> result = problemTeamService.findUnsolvedRandomProblems(teamId, tier);
+	  if (result.isEmpty())
+		  return ResponseEntity.noContent().build();
+	  return ResponseEntity.ok(result.get());
 	 
     
   }
