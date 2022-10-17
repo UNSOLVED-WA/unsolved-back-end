@@ -19,7 +19,7 @@ public class Team extends BaseTimeEntity {
 
   @Id
   @GeneratedValue
-  @Column(name = "group_id")
+  @Column(name = "team_id")
   private Long id;
 
   private String name;

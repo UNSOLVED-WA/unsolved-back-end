@@ -5,9 +5,8 @@ import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.unsolvedwa.unsolvedwa.domain.ranking.RankingService;
-import com.unsolvedwa.unsolvedwa.domain.ranking.dto.MonthRankingRequestDto;
-import com.unsolvedwa.unsolvedwa.domain.ranking.dto.MonthRankingResponseDto;
+import com.unsolvedwa.unsolvedwa.domain.problem.ProblemService;
+import com.unsolvedwa.unsolvedwa.domain.problem.dto.ProblemResponseDto;
 import com.unsolvedwa.unsolvedwa.domain.team.Team;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,56 +23,67 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
 @ExtendWith(SpringExtension.class)
-@WebMvcTest(RankingController.class)
+@WebMvcTest(ProblemController.class)
 @MockBean(JpaMetamodelMappingContext.class)
-public class RankingControllerTest {
-
+public class ProblemControllerTest {
   @Autowired
   MockMvc mockMvc;
 
   @MockBean
-  RankingService rankingService;
+  ProblemService problemService;
 
   Long teamId;
+  Long tier;
   Team team;
 
   @BeforeEach
   void beforeEach() throws Exception {
     teamId = 1L;
+    tier = 1L;
     team = new Team("teamName");
   }
 
   @Nested
-  class MonthRankingTest{
+  class GetUnsolvedTier{
     @Test
-    void successTest() throws Exception {
+    void Sucess() throws Exception {
       //given
-      List<MonthRankingResponseDto> monthRankingResponseDtoList = new ArrayList<>();
-      for (int i = 0; i < 10; i++)
-      {
-        MonthRankingResponseDto monthRankingResponseDto = new MonthRankingResponseDto(team.getName(),"user"+i,10L - i);
-        monthRankingResponseDtoList.add(monthRankingResponseDto);
-      }
-      MonthRankingRequestDto monthRankingRequestDto = new MonthRankingRequestDto(teamId);
-      given(rankingService.findMonthRankingAtThisMonth(any())).willReturn(
-          monthRankingResponseDtoList);
+      List<ProblemResponseDto> problemResponseDtoList = new ArrayList<>();
 
       //when
+      given(problemService.findUnsolvedProblemsByTeamAndTier(any(), any()))
+          .willReturn(problemResponseDtoList);
+
       // then
-      mockMvc.perform(get("/rankings/month/1"))
+      mockMvc.perform(get("/problems/unsolved/" + teamId + "/" + tier))
           .andExpect(status().isOk());
     }
 
     @Test
-    void failTest() throws Exception {
+    void NoTeam() throws Exception {
       //given
-      MonthRankingRequestDto monthRankingRequestDto = new MonthRankingRequestDto(teamId);
-      given(rankingService.findMonthRankingAtThisMonth(any())).willThrow(new NotFoundException());
 
       //when
+      given(problemService.findUnsolvedProblemsByTeamAndTier(any(), any()))
+          .willThrow(new NotFoundException());
+
       // then
-      mockMvc.perform(get("/rankings/month/1"))
+      mockMvc.perform(get("/problems/unsolved/" + teamId + "/" + tier))
           .andExpect(status().isNotFound());
     }
+
+    @Test
+    void InvalidTier() throws Exception {
+      //given
+
+      //when
+      given(problemService.findUnsolvedProblemsByTeamAndTier(any(), any()))
+          .willThrow(new NotFoundException());
+
+      // then
+      mockMvc.perform(get("/problems/unsolved/" + teamId + "/" + tier))
+          .andExpect(status().isNotFound());
+    }
+
   }
 }
