@@ -20,7 +20,6 @@ public class ProblemTeamRepositoryImpl implements ProblemTeamRepositoryCustom {
 
   @Override
   public ProblemTeam[] solvingProblem(Long user_id, Long boj_id) {
-    //TODO: entityManager 이용하여 구현
     return new ProblemTeam[10];
   }
   
@@ -55,17 +54,6 @@ public class ProblemTeamRepositoryImpl implements ProblemTeamRepositoryCustom {
   	}
   	
   	return result;
-  	
-//  	return queryFactory
-//  			.select(new QProblemResponseDto(problem.id, problem.title, problem.tier))
-//  		    .from(problem)
-//  		    .leftJoin(problem.problemTeams, problemTeam)
-//  		    .on(problemTeam.team.id.eq(teamId))
-//  		    .where(problemTeam.id.isNull().and(problem.tier.eq(tier)))
-//  		    .limit(1)
-//  		    .offset(randomNum)
-//  		    .fetch()
-//  		    .get(0);
   }
 
 }
