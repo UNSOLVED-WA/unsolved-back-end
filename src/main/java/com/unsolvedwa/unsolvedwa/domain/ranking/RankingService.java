@@ -1,5 +1,6 @@
 package com.unsolvedwa.unsolvedwa.domain.ranking;
 
+import com.unsolvedwa.unsolvedwa.domain.ranking.dto.AllRankingResponseDto;
 import com.unsolvedwa.unsolvedwa.domain.ranking.dto.MonthRankingRequestDto;
 import com.unsolvedwa.unsolvedwa.domain.ranking.dto.MonthRankingResponseDto;
 import com.unsolvedwa.unsolvedwa.domain.team.Team;
@@ -21,7 +22,7 @@ public class RankingService {
   private final RankingRepository rankingRepository;
   private final TeamRepository teamRepository;
 
-  private LocalDateTime getCurMonthDateTime(){
+  private LocalDateTime getCurMonthDateTime() {
     LocalDateTime curDateTime = LocalDateTime.now();
     return LocalDateTime.of(curDateTime.getYear(), curDateTime.getMonth(), 1, 0, 0);
   }
@@ -33,11 +34,18 @@ public class RankingService {
 
   public List<MonthRankingResponseDto> findMonthRankingAtThisMonth(MonthRankingRequestDto monthRankingRequestDto) throws NotFoundException {
     Optional<Team> temp = teamRepository.findById(monthRankingRequestDto.getTeamId());
-    if (temp.isEmpty())
-    {
+    if (temp.isEmpty()) {
       throw new NotFoundException();
     }
     LocalDateTime startTime = getCurMonthDateTime();
     return rankingRepository.findMonthRanking(monthRankingRequestDto.getTeamId(), startTime);
+  }
+
+  public List<AllRankingResponseDto> AllRanking(Long teamId) throws NotFoundException {
+    Optional<Team> temp = teamRepository.findById(teamId);
+    if (temp.isEmpty()) {
+      throw new NotFoundException();
+    }
+    return rankingRepository.AllRanking(teamId);
   }
 }

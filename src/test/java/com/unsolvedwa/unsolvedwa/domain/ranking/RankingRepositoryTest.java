@@ -1,5 +1,6 @@
 package com.unsolvedwa.unsolvedwa.domain.ranking;
 
+import com.unsolvedwa.unsolvedwa.domain.ranking.dto.AllRankingResponseDto;
 import com.unsolvedwa.unsolvedwa.domain.ranking.dto.MonthRankingResponseDto;
 import com.unsolvedwa.unsolvedwa.domain.team.Team;
 import com.unsolvedwa.unsolvedwa.domain.team.TeamRepository;
@@ -11,6 +12,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,6 +57,90 @@ class RankingRepositoryTest {
     lastMonth = curMonth.minusMonths(1);
   }
 
+  @Nested
+  class findAllRanking {
+    // 팀1에 유저 10명 동점자 없음
+    // 팀2에 유저 10명 모두 동점자
+    // 팀3에 유저가 없음
+
+    List<Team> teams;
+    List<User> users;
+    List<UserTeam> userTeam;
+
+    @BeforeEach
+    void setTestData() {
+      for (int i = 1; i <= 20; i++){
+        User user = new User("user"+i);
+        userRepository.save(user);
+      }
+      for (int i = 1; i <= 3; i++){
+        Team team = new Team("team"+i);
+        teamRepository.save(team);
+      }
+      users = userRepository.findAll();
+      teams = teamRepository.findAll();
+      for (int i = 1; i <= 3; i++){
+        if (i == 1){
+          for (int j = 1; j <= 10; j++) {
+            UserTeam userTeam = new UserTeam(teams.get(i - 1), users.get(j - 1));
+            userTeam.increaseScore(j+ 0l);
+            userTeamRepository.save(userTeam);
+          }
+        }
+        if (i == 2){
+          for (int j = 1; j <= 10; j++) {
+            UserTeam userTeam = new UserTeam(teams.get(i - 1), users.get(j - 1));
+            userTeam.increaseScore(10l);
+            userTeamRepository.save(userTeam);
+          }
+        }
+      }
+    }
+
+    @Test
+    @Transactional
+    void findAllRanking_SuccessTest() throws Exception {
+      //given
+      //team1 test
+      //when
+      List<AllRankingResponseDto> responseData = rankingRepository.AllRanking(teams.get(0).getId());
+      //then
+      Assertions.assertThat(responseData).hasSize(10);
+
+      for (int i = 0; i < 10; i++){
+        Assertions.assertThat(responseData.get(i).getScore()).isEqualTo((10 - i) + 0L);
+      }
+    }
+
+    @Test
+    @Transactional
+    void findAllRanking_AllSameScore() throws Exception {
+      //given
+      //team2 test
+
+      //when
+      List<AllRankingResponseDto> responseData = rankingRepository.AllRanking(teams.get(1).getId());
+      //then
+      Assertions.assertThat(responseData).hasSize(10);
+
+      for (int i = 0; i < 10; i++){
+        Assertions.assertThat(responseData.get(i).getScore()).isEqualTo(10l);
+      }
+    }
+
+    @Test
+    @Transactional
+    void findAllRanking_NoUserAtTeam() throws Exception {
+      //given
+      //team3 test
+
+      //when
+      List<AllRankingResponseDto> responseData = rankingRepository.AllRanking(teams.get(2).getId());
+      //then
+      Assertions.assertThat(responseData).isEmpty();
+    }
+  }
+  
   @Nested
   class findMonthRanking {
     // 팀1에 유저 15명 동점자 없음
