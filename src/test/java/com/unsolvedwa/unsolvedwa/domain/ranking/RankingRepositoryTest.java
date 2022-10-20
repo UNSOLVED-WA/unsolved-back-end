@@ -1,5 +1,6 @@
 package com.unsolvedwa.unsolvedwa.domain.ranking;
 
+import com.unsolvedwa.unsolvedwa.domain.ranking.dto.AllRankingResponseDto;
 import com.unsolvedwa.unsolvedwa.domain.ranking.dto.MonthRankingResponseDto;
 import com.unsolvedwa.unsolvedwa.domain.team.Team;
 import com.unsolvedwa.unsolvedwa.domain.team.TeamRepository;
@@ -7,6 +8,8 @@ import com.unsolvedwa.unsolvedwa.domain.user.User;
 import com.unsolvedwa.unsolvedwa.domain.user.UserRepository;
 import com.unsolvedwa.unsolvedwa.domain.userteam.UserTeam;
 import com.unsolvedwa.unsolvedwa.domain.userteam.UserTeamRepository;
+import java.time.LocalDateTime;
+import java.util.List;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,11 +17,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.time.LocalDateTime;
-import java.util.List;
 
 @SpringBootTest
 @Transactional
@@ -109,7 +108,6 @@ class RankingRepositoryTest {
       Assertions.assertThat(responseData).hasSize(10);
 
       for (int i = 0; i < 10; i++){
-        Assertions.assertThat(responseData.get(i).getBojId()).isEqualTo("user"+(10 - i));
         Assertions.assertThat(responseData.get(i).getScore()).isEqualTo((10 - i) + 0L);
       }
     }
@@ -126,7 +124,6 @@ class RankingRepositoryTest {
       Assertions.assertThat(responseData).hasSize(10);
 
       for (int i = 0; i < 10; i++){
-        Assertions.assertThat(responseData.get(i).getBojId()).isEqualTo("user"+(i + 1l));
         Assertions.assertThat(responseData.get(i).getScore()).isEqualTo(10l);
       }
     }
@@ -140,7 +137,7 @@ class RankingRepositoryTest {
       //when
       List<AllRankingResponseDto> responseData = rankingRepository.AllRanking(teams.get(2).getId());
       //then
-      Assertions.assertThat(responseData.isEmpty());
+      Assertions.assertThat(responseData).isEmpty();
     }
   }
   

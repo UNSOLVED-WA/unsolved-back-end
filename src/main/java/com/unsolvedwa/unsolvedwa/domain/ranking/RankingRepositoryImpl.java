@@ -1,15 +1,18 @@
 package com.unsolvedwa.unsolvedwa.domain.ranking;
 
-import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.unsolvedwa.unsolvedwa.domain.ranking.dto.MonthRankingResponseDto;
-import com.unsolvedwa.unsolvedwa.domain.ranking.dto.QMonthRankingResponseDto;
-import java.time.LocalDateTime;
-import java.util.List;
-
 import static com.unsolvedwa.unsolvedwa.domain.ranking.QRanking.ranking;
 import static com.unsolvedwa.unsolvedwa.domain.team.QTeam.team;
 import static com.unsolvedwa.unsolvedwa.domain.user.QUser.user;
 import static com.unsolvedwa.unsolvedwa.domain.userteam.QUserTeam.userTeam;
+
+import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.unsolvedwa.unsolvedwa.domain.ranking.dto.AllRankingResponseDto;
+import com.unsolvedwa.unsolvedwa.domain.ranking.dto.MonthRankingResponseDto;
+import com.unsolvedwa.unsolvedwa.domain.ranking.dto.QAllRankingResponseDto;
+import com.unsolvedwa.unsolvedwa.domain.ranking.dto.QMonthRankingResponseDto;
+import java.time.LocalDateTime;
+import java.util.List;
+import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public class RankingRepositoryImpl implements RankingRepositoryCustom{
