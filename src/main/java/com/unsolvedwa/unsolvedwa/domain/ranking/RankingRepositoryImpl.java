@@ -3,9 +3,12 @@ package com.unsolvedwa.unsolvedwa.domain.ranking;
 import static com.unsolvedwa.unsolvedwa.domain.ranking.QRanking.ranking;
 import static com.unsolvedwa.unsolvedwa.domain.team.QTeam.team;
 import static com.unsolvedwa.unsolvedwa.domain.user.QUser.user;
+import static com.unsolvedwa.unsolvedwa.domain.userteam.QUserTeam.userTeam;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.unsolvedwa.unsolvedwa.domain.ranking.dto.AllRankingResponseDto;
 import com.unsolvedwa.unsolvedwa.domain.ranking.dto.MonthRankingResponseDto;
+import com.unsolvedwa.unsolvedwa.domain.ranking.dto.QAllRankingResponseDto;
 import com.unsolvedwa.unsolvedwa.domain.ranking.dto.QMonthRankingResponseDto;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -38,5 +41,16 @@ public class RankingRepositoryImpl implements RankingRepositoryCustom{
             .innerJoin(ranking.user, user)
             .on(ranking.user.id.eq(userId))
             .fetch();
+    }
+
+    public List<AllRankingResponseDto> AllRanking(Long teamId){
+        return queryFactory
+                .select(new QAllRankingResponseDto(userTeam.team.name, userTeam.user.bojId, userTeam.score))
+                .from(userTeam)
+                .where(userTeam.team.id.eq(teamId))
+                .innerJoin(userTeam.team, team)
+                .innerJoin(userTeam.user, user)
+                .orderBy(userTeam.score.desc())
+                .fetch();
     }
 }
