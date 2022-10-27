@@ -1,5 +1,6 @@
 package com.unsolvedwa.unsolvedwa.domain.problemteam;
 
+import com.unsolvedwa.unsolvedwa.domain.problemteam.dto.ScoreDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import com.unsolvedwa.unsolvedwa.domain.problem.Problem;
