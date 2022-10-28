@@ -31,6 +31,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ProblemController {
 
   private final ProblemService problemService;
+  private final ProblemTeamService problemTeamService;
 
   @Operation(description = "문제조회")
   @GetMapping(value = "/{id}")
