@@ -7,6 +7,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.unsolvedwa.unsolvedwa.domain.problem.ProblemService;
 import com.unsolvedwa.unsolvedwa.domain.problem.dto.ProblemResponseDto;
+import com.unsolvedwa.unsolvedwa.domain.problemteam.ProblemTeamService;
 import com.unsolvedwa.unsolvedwa.domain.team.Team;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +32,9 @@ public class ProblemControllerTest {
 
   @MockBean
   ProblemService problemService;
+
+  @MockBean
+  ProblemTeamService problemTeamService;
 
   Long teamId;
   Long tier;
