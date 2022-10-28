@@ -20,12 +20,6 @@ import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 public class ProblemTeamService {
 
   private final ProblemTeamRepository problemTeamRepository;
-
-
-  public List<ScoreDto> solvingProblem(Long user_id, Long boj_id) {
-    return ScoreDto.ofArray(problemTeamRepository.solvingProblem(user_id, boj_id));
-  }
-  
   
   @Transactional(readOnly = true)
   public Optional<ProblemResponseDto> findUnsolvedRandomProblems(Long teamId, Long tier) {

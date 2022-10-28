@@ -18,42 +18,36 @@ public class ProblemTeamRepositoryImpl implements ProblemTeamRepositoryCustom {
 
 	private final JPAQueryFactory queryFactory;
 
-  @Override
-  public ProblemTeam[] solvingProblem(Long user_id, Long boj_id) {
-    return new ProblemTeam[10];
-  }
-  
-  @Override
-  public Optional<ProblemResponseDto> findUnsolvedRandomProblems(Long teamId, Long tier) {
-  	
-  	Random random = new Random(System.currentTimeMillis());
-  	List<Long> count;
-  	int randomNum;
-  	Optional<ProblemResponseDto> result = Optional.empty();
-  	
-  	count = queryFactory
-  		        .select(problem.id.count())
-  		        .from(problem)
-  		        .leftJoin(problem.problemTeams, problemTeam)
-  		        .on(problemTeam.team.id.eq(teamId))
-  		        .where(problemTeam.id.isNull().and(problem.tier.eq(tier)))
-  		        .fetch();
-  	
-  	if (count.get(0) > 0) {
-  		randomNum = random.nextInt(count.get(0).intValue()) + 1; 	// 0 <= value < max
-  		result = Optional.of(queryFactory
-						.select(new QProblemResponseDto(problem.id, problem.title, problem.tier))
-					    .from(problem)
-					    .leftJoin(problem.problemTeams, problemTeam)
-					    .on(problemTeam.team.id.eq(teamId))
-					    .where(problemTeam.id.isNull().and(problem.tier.eq(tier)))
-					    .limit(1)
-					    .offset(randomNum)
-					    .fetch()
-					    .get(0));
-  	}
-  	
-  	return result;
-  }
+    @Override
+    public Optional<ProblemResponseDto> findUnsolvedRandomProblems(Long teamId, Long tier) {
+    	
+    	Random random = new Random(System.currentTimeMillis());
+    	List<Long> count;
+    	int randomNum;
+    	Optional<ProblemResponseDto> result = Optional.empty();
+     	
+    	count = queryFactory
+    		        .select(problem.id.count())
+    		        .from(problem)
+    		        .leftJoin(problem.problemTeams, problemTeam)
+    		        .on(problemTeam.team.id.eq(teamId))
+    		        .where(problemTeam.id.isNull().and(problem.tier.eq(tier)))
+    		        .fetch();
+    	
+    	if (count.get(0) > 0) {
+      	randomNum = random.nextInt(count.get(0).intValue()) + 1; 	// 0 <= value < max
+      	result = Optional.of(queryFactory
+    				.select(new QProblemResponseDto(problem.id, problem.title, problem.tier))
+    			    .from(problem)
+    			    .leftJoin(problem.problemTeams, problemTeam)
+    			    .on(problemTeam.team.id.eq(teamId))
+    			    .where(problemTeam.id.isNull().and(problem.tier.eq(tier)))
+    			    .limit(1)
+    			    .offset(randomNum)
+    			    .fetch()
+    			    .get(0));
+    	}
+      	return result;
+    }
 
 }
