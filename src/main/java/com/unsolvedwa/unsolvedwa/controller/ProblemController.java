@@ -3,6 +3,8 @@ package com.unsolvedwa.unsolvedwa.controller;
 import com.unsolvedwa.unsolvedwa.domain.problem.Problem;
 import com.unsolvedwa.unsolvedwa.domain.problem.ProblemService;
 import com.unsolvedwa.unsolvedwa.domain.problem.dto.ProblemResponseDto;
+import com.unsolvedwa.unsolvedwa.domain.problem.dto.SolvingProblemRequestDto;
+import com.unsolvedwa.unsolvedwa.domain.problem.dto.SolvingProblemResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -13,6 +15,8 @@ import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -51,6 +55,23 @@ public class ProblemController {
     try
     {
       return ResponseEntity.ok(problemService.findUnsolvedProblemsByTeamAndTier(teamId, tier));
+    }
+    catch (NotFoundException e)
+    {
+      return ResponseEntity.notFound().build();
+    }
+  }
+
+  @Operation(description = "해결한 문제 서버에 전송 후 획득한 점수 응답")
+  @PostMapping(value = "/solving")
+  public ResponseEntity<List<SolvingProblemResponseDto>> solveProblem(@RequestBody
+      SolvingProblemRequestDto solvingProblemRequestDto) {
+    Long userId = solvingProblemRequestDto.getUserId();
+    Long problemNumber = solvingProblemRequestDto.getProblemNumber();
+
+    try
+    {
+      return ResponseEntity.ok(problemService.solveProblem(userId, problemNumber));
     }
     catch (NotFoundException e)
     {
