@@ -30,6 +30,7 @@ dependencies {
 	implementation 'org.springdoc:springdoc-openapi-ui:1.6.8'
 	implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
 	implementation "com.querydsl:querydsl-apt:${queryDslVersion}"
+	implementation 'com.google.code.gson:gson:2.9.0'
 }
 
 tasks.named('test') {
