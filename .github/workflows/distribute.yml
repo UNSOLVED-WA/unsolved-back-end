@@ -18,5 +18,4 @@ jobs:
           script: |
             cd ~/unsolved-back-end
             git pull
-            ./gradlew build -x test
-            java -jar ./build/libs/unsolved-wa-0.0.1-SNAPSHOT.jar
+            docker-compose up -d
