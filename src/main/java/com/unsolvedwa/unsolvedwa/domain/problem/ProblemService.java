@@ -21,6 +21,8 @@ import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.unsolvedwa.unsolvedwa.domain.problem.dto.ProblemResponseDto;
+
 @Service("ProblemService")
 @Transactional
 @RequiredArgsConstructor
@@ -114,4 +116,5 @@ public class ProblemService {
     }
     return solvingProblemResponseDtoList;
   }
+
 }

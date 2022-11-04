@@ -3,6 +3,8 @@ package com.unsolvedwa.unsolvedwa.controller;
 import com.unsolvedwa.unsolvedwa.domain.problem.Problem;
 import com.unsolvedwa.unsolvedwa.domain.problem.ProblemService;
 import com.unsolvedwa.unsolvedwa.domain.problem.dto.ProblemResponseDto;
+import com.unsolvedwa.unsolvedwa.domain.problemteam.ProblemTeamService;
+import com.unsolvedwa.unsolvedwa.domain.problemteam.dto.ScoreDto;
 import com.unsolvedwa.unsolvedwa.domain.problem.dto.SolvingProblemRequestDto;
 import com.unsolvedwa.unsolvedwa.domain.problem.dto.SolvingProblemResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
@@ -10,6 +12,9 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.ArrayList;
 import java.util.List;
+
+import java.util.Optional;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+
 @RestController
 @Tag(name = "ProblemController")
 @RequestMapping("/problems")
@@ -27,6 +33,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ProblemController {
 
   private final ProblemService problemService;
+  private final ProblemTeamService problemTeamService;
 
   @Operation(description = "문제조회")
   @GetMapping(value = "/{id}")
@@ -43,10 +50,14 @@ public class ProblemController {
 
   @Operation(description = "unsolved 리스트 조회")
   @GetMapping(value = "/{teamId}/{tier}")
-  public ResponseEntity<List<Problem>> getUnsolvedProblems(@Parameter @PathVariable Long teamId,
+  public ResponseEntity<ProblemResponseDto> getUnsolvedProblems(@Parameter @PathVariable Long teamId,
       @Parameter @PathVariable Long tier) {
-    //TODO: service 구현하여 작성
-    return ResponseEntity.ok(new ArrayList<>());
+	  Optional<ProblemResponseDto> result = problemTeamService.findUnsolvedRandomProblems(teamId, tier);
+	  if (result.isEmpty())
+		  return ResponseEntity.noContent().build();
+	  return ResponseEntity.ok(result.get());
+	 
+    
   }
 
   @Operation(description = "특정 팀, 티어의 unsolved problem 리스트 조회")

@@ -9,6 +9,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.google.gson.Gson;
 import com.unsolvedwa.unsolvedwa.domain.problem.ProblemService;
 import com.unsolvedwa.unsolvedwa.domain.problem.dto.ProblemResponseDto;
+import com.unsolvedwa.unsolvedwa.domain.problemteam.ProblemTeamService;
 import com.unsolvedwa.unsolvedwa.domain.problem.dto.SolvingProblemRequestDto;
 import com.unsolvedwa.unsolvedwa.domain.problem.dto.SolvingProblemResponseDto;
 import com.unsolvedwa.unsolvedwa.domain.team.Team;
@@ -36,6 +37,9 @@ public class ProblemControllerTest {
 
   @MockBean
   ProblemService problemService;
+
+  @MockBean
+  ProblemTeamService problemTeamService;
 
   Long teamId;
   Long tier;
