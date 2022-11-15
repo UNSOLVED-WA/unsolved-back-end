@@ -9,6 +9,7 @@ RUN ./gradlew bootJar
 
 FROM openjdk:11-jdk-slim
 COPY --from=builder build/libs/*.jar app.jar
+COPY src/main/resources/application.yaml .
 
 EXPOSE 8080
 ENTRYPOINT ["java","-jar","/app.jar"]
