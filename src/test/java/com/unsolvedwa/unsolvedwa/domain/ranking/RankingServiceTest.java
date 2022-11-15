@@ -67,7 +67,8 @@ public class RankingServiceTest{
         List<MonthRankingResponseDto> monthRankingResponseDtoList = new ArrayList<>();
         for (int i = 0; i < 10; i++)
         {
-          MonthRankingResponseDto monthRankingResponseDto = new MonthRankingResponseDto(team.getName(),"user"+i,10L - i);
+          LocalDateTime curTime = LocalDateTime.now();
+          MonthRankingResponseDto monthRankingResponseDto = new MonthRankingResponseDto(team.getName(),"user"+i,10L - i, curTime);
           monthRankingResponseDtoList.add(monthRankingResponseDto);
         }
         MonthRankingRequestDto monthRankingRequestDto = new MonthRankingRequestDto(teamId);

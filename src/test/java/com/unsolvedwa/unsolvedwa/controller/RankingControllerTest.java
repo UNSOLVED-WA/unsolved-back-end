@@ -9,6 +9,7 @@ import com.unsolvedwa.unsolvedwa.domain.ranking.RankingService;
 import com.unsolvedwa.unsolvedwa.domain.ranking.dto.MonthRankingRequestDto;
 import com.unsolvedwa.unsolvedwa.domain.ranking.dto.MonthRankingResponseDto;
 import com.unsolvedwa.unsolvedwa.domain.team.Team;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
@@ -51,7 +52,8 @@ public class RankingControllerTest {
       List<MonthRankingResponseDto> monthRankingResponseDtoList = new ArrayList<>();
       for (int i = 0; i < 10; i++)
       {
-        MonthRankingResponseDto monthRankingResponseDto = new MonthRankingResponseDto(team.getName(),"user"+i,10L - i);
+        LocalDateTime curTime = LocalDateTime.now();
+        MonthRankingResponseDto monthRankingResponseDto = new MonthRankingResponseDto(team.getName(),"user"+i,10L - i, curTime);
         monthRankingResponseDtoList.add(monthRankingResponseDto);
       }
       MonthRankingRequestDto monthRankingRequestDto = new MonthRankingRequestDto(teamId);
