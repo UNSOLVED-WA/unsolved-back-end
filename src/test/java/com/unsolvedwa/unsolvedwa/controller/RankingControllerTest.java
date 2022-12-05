@@ -6,6 +6,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.unsolvedwa.unsolvedwa.domain.ranking.RankingService;
+import com.unsolvedwa.unsolvedwa.domain.ranking.dto.MonthRankingHistoryResponseDto;
 import com.unsolvedwa.unsolvedwa.domain.ranking.dto.MonthRankingRequestDto;
 import com.unsolvedwa.unsolvedwa.domain.ranking.dto.MonthRankingResponseDto;
 import com.unsolvedwa.unsolvedwa.domain.team.Team;
@@ -36,11 +37,14 @@ public class RankingControllerTest {
   RankingService rankingService;
 
   Long teamId;
+  Long userId;
   Team team;
 
   @BeforeEach
   void beforeEach() throws Exception {
-    teamId = 1L;
+    this.teamId = 1L;
+    this.userId = 1L;
+
     team = new Team("teamName");
   }
 
@@ -75,6 +79,54 @@ public class RankingControllerTest {
       //when
       // then
       mockMvc.perform(get("/rankings/month/1"))
+          .andExpect(status().isNotFound());
+    }
+  }
+
+  @Nested
+  class MonthRankingHistoryTest{
+
+
+    @Test
+    void success() throws Exception {
+      //given
+      List<MonthRankingHistoryResponseDto> responseDtoList = new ArrayList<>();
+      LocalDateTime curTime = LocalDateTime.now();
+
+      for (int i = 0; i < 10; i++)
+      {
+        LocalDateTime rankingTime = curTime.minusMonths(i + 0L);
+        MonthRankingHistoryResponseDto responseDto = new MonthRankingHistoryResponseDto("team" + i, "bojId" + i, i + 1L, i + 1L, rankingTime);
+        responseDtoList.add(responseDto);
+      }
+
+      given(rankingService.findRankingHistory(any(), any())).willReturn(responseDtoList);
+
+      //when
+      // then
+      mockMvc.perform(get("/rankings/month/history/" + teamId + "/" + userId))
+          .andExpect(status().isOk());
+    }
+
+    @Test
+    void noContent() throws Exception {
+      //given
+      List<MonthRankingHistoryResponseDto> responseDtoList = new ArrayList<>();
+      given(rankingService.findRankingHistory(any(), any())).willReturn(responseDtoList);
+      //when
+      // then
+      mockMvc.perform(get("/rankings/month/history/" + teamId + "/" + userId))
+          .andExpect(status().isNoContent());
+    }
+
+    @Test
+    void throwNotFound() throws Exception {
+      //given
+      given(rankingService.findRankingHistory(any(), any())).willThrow(new NotFoundException());
+
+      //when
+      // then
+      mockMvc.perform(get("/rankings/month/history/" + teamId + "/" + userId))
           .andExpect(status().isNotFound());
     }
   }

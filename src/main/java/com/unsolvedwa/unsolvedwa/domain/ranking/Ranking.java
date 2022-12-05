@@ -48,6 +48,7 @@ public class Ranking extends BaseTimeEntity {
   {
     this.setCreateAt(createAt);
   }
+  public void changeMonthRankingForTestData(Long monthRanking) { this.monthRanking = monthRanking; }
 
   public void increaseScore(Long score) {
     this.score += score;
