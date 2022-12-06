@@ -7,8 +7,10 @@ import static com.unsolvedwa.unsolvedwa.domain.userteam.QUserTeam.userTeam;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.unsolvedwa.unsolvedwa.domain.ranking.dto.AllRankingResponseDto;
+import com.unsolvedwa.unsolvedwa.domain.ranking.dto.MonthRankingHistoryResponseDto;
 import com.unsolvedwa.unsolvedwa.domain.ranking.dto.MonthRankingResponseDto;
 import com.unsolvedwa.unsolvedwa.domain.ranking.dto.QAllRankingResponseDto;
+import com.unsolvedwa.unsolvedwa.domain.ranking.dto.QMonthRankingHistoryResponseDto;
 import com.unsolvedwa.unsolvedwa.domain.ranking.dto.QMonthRankingResponseDto;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -21,7 +23,7 @@ public class RankingRepositoryImpl implements RankingRepositoryCustom{
 
     public List<MonthRankingResponseDto> findMonthRanking(Long teamId, LocalDateTime startTime){
         return queryFactory
-            .select(new QMonthRankingResponseDto(ranking.team.name, ranking.user.bojId, ranking.score))
+            .select(new QMonthRankingResponseDto(ranking.team.name, ranking.user.bojId, ranking.score, ranking.createAt))
             .from(ranking)
             .where(ranking.createAt.after(startTime))
             .innerJoin(ranking.team, team)
@@ -33,13 +35,25 @@ public class RankingRepositoryImpl implements RankingRepositoryCustom{
 
     public List<MonthRankingResponseDto> findMonthRankingByTeamAndUser(Long teamId, Long userId, LocalDateTime startTime){
         return queryFactory
-            .select(new QMonthRankingResponseDto(ranking.team.name, ranking.user.bojId, ranking.score))
+            .select(new QMonthRankingResponseDto(ranking.team.name, ranking.user.bojId, ranking.score, ranking.createAt))
             .from(ranking)
             .where(ranking.createAt.after(startTime))
             .innerJoin(ranking.team, team)
             .on(ranking.team.id.eq(teamId))
             .innerJoin(ranking.user, user)
             .on(ranking.user.id.eq(userId))
+            .fetch();
+    }
+
+    public List<MonthRankingHistoryResponseDto> findMonthRankingHistoryByTeamAndUser(Long teamId, Long userId){
+        return queryFactory
+            .select(new QMonthRankingHistoryResponseDto(ranking.team.name, ranking.user.bojId, ranking.score, ranking.monthRanking, ranking.createAt))
+            .from(ranking)
+            .innerJoin(ranking.team, team)
+            .on(ranking.team.id.eq(teamId))
+            .innerJoin(ranking.user, user)
+            .on(ranking.user.id.eq(userId))
+            .orderBy(ranking.createAt.desc())
             .fetch();
     }
 
