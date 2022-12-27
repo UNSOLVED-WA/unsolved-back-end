@@ -7,17 +7,19 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class MonthRankingResponseDto {
+public class MonthRankingHistoryResponseDto {
   private String teamName;
   private String bojId;
   private Long score;
+  private Long ranking;
   private LocalDateTime createAt;
 
   @QueryProjection
-  public MonthRankingResponseDto(String teamName, String bojId, Long score, LocalDateTime createAt) {
+  public MonthRankingHistoryResponseDto(String teamName, String bojId, Long score, Long ranking, LocalDateTime createAt) {
     this.teamName = teamName;
     this.bojId = bojId;
     this.score = score;
+    this.ranking = ranking;
     this.createAt = createAt;
   }
 }

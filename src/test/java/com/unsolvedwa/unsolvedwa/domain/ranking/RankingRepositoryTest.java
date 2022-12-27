@@ -1,6 +1,7 @@
 package com.unsolvedwa.unsolvedwa.domain.ranking;
 
 import com.unsolvedwa.unsolvedwa.domain.ranking.dto.AllRankingResponseDto;
+import com.unsolvedwa.unsolvedwa.domain.ranking.dto.MonthRankingHistoryResponseDto;
 import com.unsolvedwa.unsolvedwa.domain.ranking.dto.MonthRankingResponseDto;
 import com.unsolvedwa.unsolvedwa.domain.team.Team;
 import com.unsolvedwa.unsolvedwa.domain.team.TeamRepository;
@@ -9,6 +10,7 @@ import com.unsolvedwa.unsolvedwa.domain.user.UserRepository;
 import com.unsolvedwa.unsolvedwa.domain.userteam.UserTeam;
 import com.unsolvedwa.unsolvedwa.domain.userteam.UserTeamRepository;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
@@ -330,6 +332,93 @@ class RankingRepositoryTest {
       for (int i = 0; i < numOfRankUsers; i++){
         Assertions.assertThat(responseData.get(i).getScore()).isEqualTo((numOfRankUsers - i) + 0L);
       }
+    }
+  }
+
+  @Nested
+  class findRankingHistory {
+    List<User> userList;
+    List<Team> teamList;
+
+    void setTestData(List<LocalDateTime> rankingCreatedAtList) {
+      for (int i = 0; i < 5; i++){
+        User user = new User("user" + i);
+        userRepository.save(user);
+      }
+      userList = userRepository.findAll();
+
+      for (int i = 0; i < 5; i++){
+        Team team = new Team("team");
+        teamRepository.save(team);
+      }
+      teamList = teamRepository.findAll();
+
+      for (int i = 0; i < 5; i++){
+        for (int j = 0; j < 5; j++){
+          UserTeam userTeam = new UserTeam(teamList.get(i), userList.get(j));
+          userTeamRepository.save(userTeam);
+        }
+      }
+
+      for (int i = 0; i < 5; i++) {
+        for (int j = 0; j < 5; j++) {
+          for (int k = 0; k < rankingCreatedAtList.size(); k++) {
+            Ranking ranking = new Ranking(userList.get(i), teamList.get(j));
+            ranking.changeCreateAtForTestData(rankingCreatedAtList.get(k));
+            ranking.changeMonthRankingForTestData(k + 0L);
+            ranking.increaseScore(k + 0L);
+            rankingRepository.save(ranking);
+          }
+        }
+      }
+    }
+
+    @Test
+    @Transactional
+    void NoHistory() throws Exception {
+      //given
+      List<LocalDateTime> rankingCreatedAtList = new ArrayList<>();
+      setTestData(rankingCreatedAtList);
+
+      //when
+      List<MonthRankingHistoryResponseDto> monthRankingHistoryResponseDtoList = rankingRepository.findMonthRankingHistoryByTeamAndUser(teamList.get(0).getId(), userList.get(0).getId());
+
+      // then
+      Assertions.assertThat(monthRankingHistoryResponseDtoList).isEmpty();
+    }
+
+    @Test
+    void ContinuousHistory() throws Exception {
+      //given
+      List<LocalDateTime> rankingCreatedAtList = new ArrayList<>();
+      for (int i = 0; i < 5; i++) {
+        LocalDateTime curTime = LocalDateTime.now();
+        LocalDateTime rankingTime = curTime.minusMonths(i + 0L);
+        rankingCreatedAtList.add(rankingTime);
+      }
+      setTestData(rankingCreatedAtList);
+      //when
+      List<MonthRankingHistoryResponseDto> monthRankingHistoryResponseDtoList = rankingRepository.findMonthRankingHistoryByTeamAndUser(teamList.get(0).getId(), userList.get(0).getId());
+
+      // then
+      Assertions.assertThat(monthRankingHistoryResponseDtoList).hasSize(5);
+    }
+
+    @Test
+    void NotContinuousHistory() throws Exception {
+      //given
+      List<LocalDateTime> rankingCreatedAtList = new ArrayList<>();
+      for (int i = 0; i < 5; i++) {
+        LocalDateTime curTime = LocalDateTime.now();
+        LocalDateTime rankingTime = curTime.minusMonths(i * 2 + 0L);
+        rankingCreatedAtList.add(rankingTime);
+      }
+      setTestData(rankingCreatedAtList);
+      //when
+      List<MonthRankingHistoryResponseDto> monthRankingHistoryResponseDtoList = rankingRepository.findMonthRankingHistoryByTeamAndUser(teamList.get(0).getId(), userList.get(0).getId());
+
+      // then
+      Assertions.assertThat(monthRankingHistoryResponseDtoList).hasSize(5);
     }
   }
 }

@@ -3,10 +3,13 @@ package com.unsolvedwa.unsolvedwa.domain.ranking;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.doReturn;
 
+import com.unsolvedwa.unsolvedwa.domain.ranking.dto.MonthRankingHistoryResponseDto;
 import com.unsolvedwa.unsolvedwa.domain.ranking.dto.MonthRankingRequestDto;
 import com.unsolvedwa.unsolvedwa.domain.ranking.dto.MonthRankingResponseDto;
 import com.unsolvedwa.unsolvedwa.domain.team.Team;
 import com.unsolvedwa.unsolvedwa.domain.team.TeamRepository;
+import com.unsolvedwa.unsolvedwa.domain.user.User;
+import com.unsolvedwa.unsolvedwa.domain.user.UserRepository;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,14 +34,19 @@ public class RankingServiceTest{
   TeamRepository teamRepository;
 
   @Mock
+  UserRepository userRepository;
+
+  @Mock
   RankingRepository rankingRepository;
 
   Long teamId;
+  Long userId;
   Optional<Team> optionalTeam;
 
   @BeforeEach
   void beforeEach() throws Exception {
     this.teamId = 1L;
+    this.userId = 1L;
   }
 
   @Nested
@@ -67,7 +75,8 @@ public class RankingServiceTest{
         List<MonthRankingResponseDto> monthRankingResponseDtoList = new ArrayList<>();
         for (int i = 0; i < 10; i++)
         {
-          MonthRankingResponseDto monthRankingResponseDto = new MonthRankingResponseDto(team.getName(),"user"+i,10L - i);
+          LocalDateTime curTime = LocalDateTime.now();
+          MonthRankingResponseDto monthRankingResponseDto = new MonthRankingResponseDto(team.getName(),"user"+i,10L - i, curTime);
           monthRankingResponseDtoList.add(monthRankingResponseDto);
         }
         MonthRankingRequestDto monthRankingRequestDto = new MonthRankingRequestDto(teamId);
@@ -118,9 +127,91 @@ public class RankingServiceTest{
         MonthRankingRequestDto monthRankingRequestDto = new MonthRankingRequestDto(teamId);
 
         //when
+
         // then
         assertThrows(NotFoundException.class, ()->{
           rankingService.findMonthRankingAtThisMonth(monthRankingRequestDto);
+        });
+      }
+    }
+  }
+
+  @Nested
+  class FindRankingHistory {
+
+    @Nested
+    class TeamIdIsValid {
+
+      @BeforeEach
+      void beforEach() throws Exception {
+        Team team = new Team("team");
+        Optional<Team> optionalTeam = Optional.of(team);
+        doReturn(optionalTeam).when(teamRepository).findById(teamId);
+      }
+
+      @Nested
+      class UserIdIsValid {
+        @BeforeEach
+        void beforEach() throws Exception {
+          User user = new User("user");
+          Optional<User> optionalUser = Optional.of(user);
+          doReturn(optionalUser).when(userRepository).findById(userId);
+        }
+
+        @Test
+        void success() throws Exception {
+          //given
+          List<MonthRankingHistoryResponseDto> monthRankingHistoryResponseDtoList = new ArrayList<>();
+
+          //when
+          doReturn(monthRankingHistoryResponseDtoList).when(rankingRepository).findMonthRankingHistoryByTeamAndUser(teamId, userId);
+
+          // then
+          List<MonthRankingHistoryResponseDto> responseDtoList = rankingService.findRankingHistory(teamId, userId);
+          Assertions.assertThat(responseDtoList).isEmpty();
+        }
+      }
+
+      @Nested
+      class UserIdIsInvalid {
+
+        @BeforeEach
+        void beforEach() throws Exception {
+          Optional<User> optionalUser = Optional.empty();
+          doReturn(optionalUser).when(userRepository).findById(userId);
+        }
+
+        @Test
+        void throwNotFound() throws Exception {
+          //given
+
+          //when
+
+          // then
+          assertThrows(NotFoundException.class, ()->{
+            rankingService.findRankingHistory(teamId, userId);
+          });
+        }
+      }
+    }
+
+    @Nested
+    class TeamIdIsInvalid {
+      @BeforeEach
+      void beforEach() throws Exception {
+        Optional<Team> optionalTeam = Optional.empty();
+        doReturn(optionalTeam).when(teamRepository).findById(teamId);
+      }
+
+      @Test
+      void throwNotFound() throws Exception {
+        //given
+
+        //when
+
+        // then
+        assertThrows(NotFoundException.class, ()->{
+          rankingService.findRankingHistory(teamId, userId);
         });
       }
     }

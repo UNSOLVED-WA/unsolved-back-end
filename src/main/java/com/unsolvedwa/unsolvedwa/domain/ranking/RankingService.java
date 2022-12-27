@@ -1,10 +1,13 @@
 package com.unsolvedwa.unsolvedwa.domain.ranking;
 
 import com.unsolvedwa.unsolvedwa.domain.ranking.dto.AllRankingResponseDto;
+import com.unsolvedwa.unsolvedwa.domain.ranking.dto.MonthRankingHistoryResponseDto;
 import com.unsolvedwa.unsolvedwa.domain.ranking.dto.MonthRankingRequestDto;
 import com.unsolvedwa.unsolvedwa.domain.ranking.dto.MonthRankingResponseDto;
 import com.unsolvedwa.unsolvedwa.domain.team.Team;
 import com.unsolvedwa.unsolvedwa.domain.team.TeamRepository;
+import com.unsolvedwa.unsolvedwa.domain.user.User;
+import com.unsolvedwa.unsolvedwa.domain.user.UserRepository;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +24,7 @@ public class RankingService {
 
   private final RankingRepository rankingRepository;
   private final TeamRepository teamRepository;
+  private final UserRepository userRepository;
 
   private LocalDateTime getCurMonthDateTime() {
     LocalDateTime curDateTime = LocalDateTime.now();
@@ -39,6 +43,19 @@ public class RankingService {
     }
     LocalDateTime startTime = getCurMonthDateTime();
     return rankingRepository.findMonthRanking(monthRankingRequestDto.getTeamId(), startTime);
+  }
+
+  public List<MonthRankingHistoryResponseDto> findRankingHistory(Long teamId, Long userId) throws NotFoundException {
+    Optional<Team> optionalTeam = teamRepository.findById(teamId);
+    if (optionalTeam.isEmpty()) {
+      throw new NotFoundException();
+    }
+
+    Optional<User> optionalUser = userRepository.findById(userId);
+    if (optionalUser.isEmpty()) {
+      throw new NotFoundException();
+    }
+    return rankingRepository.findMonthRankingHistoryByTeamAndUser(teamId, userId);
   }
 
   public List<AllRankingResponseDto> AllRanking(Long teamId) throws NotFoundException {
