@@ -58,7 +58,7 @@ public class ProblemControllerTest {
     void Success() throws Exception {
       //given
       //when
-      Long userId = 1L;
+      String bojId = "user1";
       Long problemId = 1L;
       Long problemNumber = 1L;
       String problemTitle = "problem";
@@ -73,10 +73,10 @@ public class ProblemControllerTest {
         solvingProblemResponseDtoList.add(solvingProblemResponseDto);
       }
 
-      given(problemService.solveProblem(userId, problemNumber))
+      given(problemService.solveProblem(bojId, problemNumber))
           .willReturn(solvingProblemResponseDtoList);
 
-      SolvingProblemRequestDto solvingProblemRequestDto = new SolvingProblemRequestDto(userId, problemNumber);
+      SolvingProblemRequestDto solvingProblemRequestDto = new SolvingProblemRequestDto(bojId, problemNumber);
       Gson gson = new Gson();
       String content = gson.toJson(solvingProblemRequestDto);
 
@@ -91,13 +91,13 @@ public class ProblemControllerTest {
     void NoUser() throws Exception {
       //given
       //when
-      Long userId = 1L;
+      String bojId = "user1";
       Long problemNumber = 1L;
 
-      given(problemService.solveProblem(userId, problemNumber))
+      given(problemService.solveProblem(bojId, problemNumber))
           .willThrow(new NotFoundException());
 
-      SolvingProblemRequestDto solvingProblemRequestDto = new SolvingProblemRequestDto(userId, problemNumber);
+      SolvingProblemRequestDto solvingProblemRequestDto = new SolvingProblemRequestDto(bojId, problemNumber);
       Gson gson = new Gson();
       String content = gson.toJson(solvingProblemRequestDto);
 
@@ -112,13 +112,13 @@ public class ProblemControllerTest {
     void NoProblem() throws Exception {
       //given
       //when
-      Long userId = 1L;
+      String bojId = "user1";
       Long problemNumber = 1L;
 
-      given(problemService.solveProblem(userId, problemNumber))
+      given(problemService.solveProblem(bojId, problemNumber))
           .willThrow(new NotFoundException());
 
-      SolvingProblemRequestDto solvingProblemRequestDto = new SolvingProblemRequestDto(userId, problemNumber);
+      SolvingProblemRequestDto solvingProblemRequestDto = new SolvingProblemRequestDto(bojId, problemNumber);
       Gson gson = new Gson();
       String content = gson.toJson(solvingProblemRequestDto);
 
