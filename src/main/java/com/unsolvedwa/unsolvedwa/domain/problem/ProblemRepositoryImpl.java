@@ -13,10 +13,9 @@ import lombok.RequiredArgsConstructor;
 public class ProblemRepositoryImpl implements ProblemRepositoryCustom {
   private final JPAQueryFactory queryFactory;
 
-
   public List<ProblemResponseDto> findUnsolvedProblemsByTeamAndTier(Long teamId, Long tier) {
     return queryFactory
-        .select(new QProblemResponseDto(problem.id, problem.title, problem.tier))
+        .select(new QProblemResponseDto(problem.id, problem.problemNumber, problem.title, problem.tier))
         .from(problem)
         .leftJoin(problem.problemTeams, problemTeam)
         .on(problemTeam.team.id.eq(teamId))
