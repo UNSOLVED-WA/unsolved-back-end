@@ -6,11 +6,11 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class SolvingProblemRequestDto {
-  Long userId;
+  String bojId;
   Long problemNumber;
 
-  public SolvingProblemRequestDto(Long userId, Long problemNumber){
-    this.userId = userId;
+  public SolvingProblemRequestDto(String bojId, Long problemNumber){
+    this.bojId = bojId;
     this.problemNumber = problemNumber;
   }
 }

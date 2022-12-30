@@ -80,10 +80,11 @@ public class ProblemServiceTest {
       @BeforeEach
       void beforeEach() throws Exception {
         userId = 1L;
+        bojId = "user";
         problemNumber = 1L;
 
         Optional<User> optionalUser = Optional.empty();
-        doReturn(optionalUser).when(userRepository).findById(userId);
+        doReturn(optionalUser).when(userRepository).findByBojId(bojId);
       }
 
       @Test
@@ -92,7 +93,7 @@ public class ProblemServiceTest {
         //when
         //then
         assertThrows(NotFoundException.class, ()->{
-          problemService.solveProblem(userId, problemNumber);
+          problemService.solveProblem(bojId, problemNumber);
         });
       }
     }
@@ -107,7 +108,7 @@ public class ProblemServiceTest {
         user = new User(bojId);
 
         Optional<User> optionalUser = Optional.of(user);
-        doReturn(optionalUser).when(userRepository).findById(userId);
+        doReturn(optionalUser).when(userRepository).findByBojId(bojId);
 
         Optional<Problem> optionalProblem = Optional.empty();
         doReturn(optionalProblem).when(problemRepository).findByProblemNumber(problemNumber);
@@ -119,7 +120,7 @@ public class ProblemServiceTest {
         //when
         //then
         assertThrows(NotFoundException.class, ()->{
-          problemService.solveProblem(userId, problemNumber);
+          problemService.solveProblem(bojId, problemNumber);
         });
       }
     }
@@ -154,7 +155,7 @@ public class ProblemServiceTest {
         }
 
         Optional<User> optionalUser = Optional.of(user);
-        doReturn(optionalUser).when(userRepository).findById(userId);
+        doReturn(optionalUser).when(userRepository).findByBojId(bojId);
 
         Optional<Problem> optionalProblem = Optional.of(problem);
         doReturn(optionalProblem).when(problemRepository).findByProblemNumber(problemNumber);
@@ -190,7 +191,7 @@ public class ProblemServiceTest {
         doReturn(Optional.empty()).when(problemTeamRepository).findByProblemAndTeam(any(), any());
 
         //then
-        List<SolvingProblemResponseDto> solvingProblemResponseDtoList = problemService.solveProblem(userId, problemNumber);
+        List<SolvingProblemResponseDto> solvingProblemResponseDtoList = problemService.solveProblem(bojId, problemNumber);
         Assertions.assertThat(solvingProblemResponseDtoList).hasSize(numOfTeam.intValue() - alreadySolved.intValue());
       }
 
@@ -214,7 +215,7 @@ public class ProblemServiceTest {
         doReturn(Optional.empty()).when(problemTeamRepository).findByProblemAndTeam(problem, teamList.get(1));
 
         //then
-        List<SolvingProblemResponseDto> solvingProblemResponseDtoList = problemService.solveProblem(userId, problemNumber);
+        List<SolvingProblemResponseDto> solvingProblemResponseDtoList = problemService.solveProblem(bojId, problemNumber);
         Assertions.assertThat(solvingProblemResponseDtoList).hasSize(numOfTeam.intValue() - alreadySolved.intValue());
       }
 
@@ -241,7 +242,7 @@ public class ProblemServiceTest {
 //        doReturn(Optional.of(problemTeamList.get(1))).when(problemTeamRepository).findByProblemAndTeam(problem, teamList.get(1));
 
         //then
-        List<SolvingProblemResponseDto> solvingProblemResponseDtoList = problemService.solveProblem(userId, problemNumber);
+        List<SolvingProblemResponseDto> solvingProblemResponseDtoList = problemService.solveProblem(bojId, problemNumber);
         Assertions.assertThat(solvingProblemResponseDtoList).hasSize(numOfTeam.intValue() - alreadySolved.intValue());
       }
     }

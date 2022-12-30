@@ -73,12 +73,12 @@ public class ProblemController {
   @PostMapping(value = "/solving")
   public ResponseEntity<List<SolvingProblemResponseDto>> solveProblem(@RequestBody
       SolvingProblemRequestDto solvingProblemRequestDto) {
-    Long userId = solvingProblemRequestDto.getUserId();
+    String bojId = solvingProblemRequestDto.getBojId();
     Long problemNumber = solvingProblemRequestDto.getProblemNumber();
 
     try
     {
-      return ResponseEntity.ok(problemService.solveProblem(userId, problemNumber));
+      return ResponseEntity.ok(problemService.solveProblem(bojId, problemNumber));
     }
     catch (NotFoundException e)
     {

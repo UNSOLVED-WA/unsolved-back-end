@@ -21,8 +21,6 @@ import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.unsolvedwa.unsolvedwa.domain.problem.dto.ProblemResponseDto;
-
 @Service("ProblemService")
 @Transactional
 @RequiredArgsConstructor
@@ -64,8 +62,8 @@ public class ProblemService {
   }
 
   @Transactional(readOnly = false)
-  public List<SolvingProblemResponseDto> solveProblem(Long userId, Long problemNumber) throws NotFoundException {
-    Optional<User> user = userRepository.findById(userId);
+  public List<SolvingProblemResponseDto> solveProblem(String bojId, Long problemNumber) throws NotFoundException {
+    Optional<User> user = userRepository.findByBojId(bojId);
 
     if (user.isEmpty()) {
       throw new NotFoundException();
