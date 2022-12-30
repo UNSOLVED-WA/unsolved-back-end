@@ -8,7 +8,7 @@ jobs:
   distribute:
     runs-on: ubuntu-latest
     steps:
-      - name: Deploy bmtown
+      - name: Deploy
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SERVER_HOST }}
@@ -18,4 +18,4 @@ jobs:
           script: |
             cd ~/unsolved-back-end
             git pull
-            sudo docker-compose up -d
+            sudo docker-compose up -d --build

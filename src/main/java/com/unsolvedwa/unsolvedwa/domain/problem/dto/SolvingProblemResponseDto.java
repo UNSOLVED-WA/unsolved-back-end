@@ -9,8 +9,8 @@ public class SolvingProblemResponseDto extends ProblemResponseDto {
   private Long score;
   private String teamName;
 
-  public SolvingProblemResponseDto(Long problemId, String problemTitle, Long tier, Long score, String teamName) {
-    super(problemId, problemTitle, tier);
+  public SolvingProblemResponseDto(Long problemId, Long problemNumber, String problemTitle, Long tier, Long score, String teamName) {
+    super(problemId, problemNumber, problemTitle, tier);
     this.score = score;
     this.teamName = teamName;
   }

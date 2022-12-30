@@ -84,7 +84,7 @@ public class ProblemRepositoryTest {
         Problem problem = problems.get(i);
         User solvingUser = users.get(i/numOfSolvedProblemByEachUser.intValue());
         try {
-          problemService.solveProblem(solvingUser.getId(), problem.getProblemNumber());
+          problemService.solveProblem(solvingUser.getBojId(), problem.getProblemNumber());
         }
         catch (NotFoundException notFoundException) {
         }
