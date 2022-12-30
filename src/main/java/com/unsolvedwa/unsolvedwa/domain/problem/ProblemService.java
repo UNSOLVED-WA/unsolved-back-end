@@ -108,7 +108,7 @@ public class ProblemService {
         ranking.increaseScore(1L);
         rankingRepository.save(ranking);
 
-        SolvingProblemResponseDto solvingProblemResponseDto = new SolvingProblemResponseDto(problem.get().getId(), problem.get().getTitle(), problem.get().getTier(), 1L, curTeam.getName());
+        SolvingProblemResponseDto solvingProblemResponseDto = new SolvingProblemResponseDto(problem.get().getId(), problem.get().getProblemNumber(),problem.get().getTitle(), problem.get().getTier(), 1L, curTeam.getName());
         solvingProblemResponseDtoList.add(solvingProblemResponseDto);
       }
     }

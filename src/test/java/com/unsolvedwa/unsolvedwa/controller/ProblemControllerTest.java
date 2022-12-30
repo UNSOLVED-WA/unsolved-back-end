@@ -69,7 +69,7 @@ public class ProblemControllerTest {
       for (int i = 0; i < 3; i++) {
         String teamName = "team" + (i + 1);
         SolvingProblemResponseDto solvingProblemResponseDto = new SolvingProblemResponseDto(
-            problemId, problemTitle, tier, score, teamName);
+            problemId, problemNumber, problemTitle, tier, score, teamName);
         solvingProblemResponseDtoList.add(solvingProblemResponseDto);
       }
 

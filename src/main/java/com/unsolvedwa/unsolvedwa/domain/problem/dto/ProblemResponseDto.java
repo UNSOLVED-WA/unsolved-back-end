@@ -8,12 +8,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ProblemResponseDto {
   private Long problemId;
+  private Long problemNumber;
   private Long tier;
   private String problemTitle;
 
   @QueryProjection
-  public ProblemResponseDto(Long problemId, String problemTitle, Long tier) {
+  public ProblemResponseDto(Long problemId, Long problemNumber, String problemTitle, Long tier) {
     this.problemId = problemId;
+    this.problemNumber = problemNumber;
     this.problemTitle = problemTitle;
     this.tier = tier;
   }

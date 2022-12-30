@@ -255,6 +255,7 @@ public class ProblemServiceTest {
     class TeamIsValid{
       Team team;
       Long problemId;
+      Long problemNumber;
       String problemTitle;
       Long tier;
 
@@ -263,6 +264,7 @@ public class ProblemServiceTest {
         LocalDateTime cur = LocalDateTime.now();
 
         problemId = 1L;
+        problemNumber = 1L;
         problemTitle = "problem";
         tier = 1L;
 
@@ -277,7 +279,7 @@ public class ProblemServiceTest {
         List<ProblemResponseDto> unsolvedProblemResponseDtoList = new ArrayList<>();
         for (int i = 1; i <= 10; i++)
         {
-          ProblemResponseDto problemResponseDto = new ProblemResponseDto(problemId, problemTitle + i, tier);
+          ProblemResponseDto problemResponseDto = new ProblemResponseDto(problemId, problemNumber, problemTitle + i, tier);
           unsolvedProblemResponseDtoList.add(problemResponseDto);
         }
 
