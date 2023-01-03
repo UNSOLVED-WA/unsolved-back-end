@@ -4,7 +4,7 @@ on:
   push:
     branches: [ main ]
 
-jobs:   
+jobs:
   docker:
     name: Deploy Docker Image
     runs-on: ubuntu-latest
@@ -24,4 +24,4 @@ jobs:
     - name: Docker Hub Sign-in
       run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
     - name: Publish Docker Image
-      run: docker push $REPO
+      run: docker push docker.io/$REPO
