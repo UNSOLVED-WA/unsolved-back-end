@@ -20,7 +20,7 @@ jobs:
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
     - name: build docker
-      run: ./gradlew bootBuildImage --imageName=unsolvedwa/backen-api
+      run: ./gradlew bootBuildImage --imageName=unsolvedwa/backend-api
     - name: Docker Hub Sign-in
       run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
     - name: Publish Docker Image
