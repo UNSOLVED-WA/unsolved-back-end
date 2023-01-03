@@ -4,7 +4,7 @@ on:
   push:
     branches: [ main ]
 
-jobs:   
+jobs:
   docker:
     name: Deploy Docker Image
     runs-on: ubuntu-latest
@@ -17,11 +17,28 @@ jobs:
       with:
         java-version: '11'
         distribution: 'adopt'
+    - name: extract version from commit message
+      run: |
+        VERSION=$(grep -o -E "v[0-9]+\.[0-9]+\.[0-9]+" <<< "${{ github.event.head_commit.message }}")
+        echo "VERSION=${VERSION}" >> $GITHUB_ENV
+    - name: create Github release
+      uses: actions/create-release@v1
+      with:
+        tag_name: ${{ env.VERSION }}
+        release_name: ${{ env.VERSION }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB }}
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
     - name: build docker
       run: ./gradlew bootBuildImage --imageName=unsolvedwa/backen-api
-    - name: Docker Hub Sign-in
-      run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+    - name: Login to Docker Hub
+      uses: docker/login-action@v1
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
     - name: Publish Docker Image
-      run: docker push $REPO
+      run: |
+        docker push $REPO
+        docker tag $REPO $REPO:${{ env.VERSION }}
+        docker push $REPO:${{ env.VERSION }}
