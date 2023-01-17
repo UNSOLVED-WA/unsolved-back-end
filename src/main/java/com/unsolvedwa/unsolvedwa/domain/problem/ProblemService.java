@@ -48,17 +48,17 @@ public class ProblemService {
   }
 
   @Transactional(readOnly = true)
-  public List<ProblemResponseDto> findUnsolvedProblemsByTeamAndTier(Long teamId, Long tier) throws NotFoundException {
+  public List<ProblemResponseDto> findUnsolvedProblemsByTeamAndTier(String teamName, Long tier) throws NotFoundException {
     if (tier < 0L || tier > 33L)
     {
       throw new NotFoundException();
     }
-    Optional<Team> temp = teamRepository.findById(teamId);
+    Optional<Team> temp = teamRepository.findByName(teamName);
     if (temp.isEmpty())
     {
       throw new NotFoundException();
     }
-    return problemRepository.findUnsolvedProblemsByTeamAndTier(teamId, tier);
+    return problemRepository.findUnsolvedProblemsByTeamAndTier(temp.get().getId(), tier);
   }
 
   @Transactional(readOnly = false)

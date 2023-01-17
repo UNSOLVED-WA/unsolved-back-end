@@ -43,13 +43,15 @@ public class ProblemControllerTest {
 
   Long teamId;
   Long tier;
+  String teamName;
   Team team;
 
   @BeforeEach
   void beforeEach() throws Exception {
     teamId = 1L;
     tier = 1L;
-    team = new Team("teamName");
+    teamName = "teamName";
+    team = new Team(teamName);
   }
 
   @Nested
@@ -143,7 +145,7 @@ public class ProblemControllerTest {
           .willReturn(problemResponseDtoList);
 
       // then
-      mockMvc.perform(get("/problems/unsolved/" + teamId + "/" + tier))
+      mockMvc.perform(get("/problems/unsolved/" + teamName + "/" + tier))
           .andExpect(status().isOk());
     }
 
@@ -156,7 +158,7 @@ public class ProblemControllerTest {
           .willThrow(new NotFoundException());
 
       // then
-      mockMvc.perform(get("/problems/unsolved/" + teamId + "/" + tier))
+      mockMvc.perform(get("/problems/unsolved/" + teamName + "/" + tier))
           .andExpect(status().isNotFound());
     }
 
@@ -169,7 +171,7 @@ public class ProblemControllerTest {
           .willThrow(new NotFoundException());
 
       // then
-      mockMvc.perform(get("/problems/unsolved/" + teamId + "/" + tier))
+      mockMvc.perform(get("/problems/unsolved/" + teamName + "/" + tier))
           .andExpect(status().isNotFound());
     }
 

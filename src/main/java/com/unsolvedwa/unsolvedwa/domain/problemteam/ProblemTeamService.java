@@ -1,17 +1,10 @@
 package com.unsolvedwa.unsolvedwa.domain.problemteam;
 
-import com.unsolvedwa.unsolvedwa.domain.problemteam.dto.ScoreDto;
+import com.unsolvedwa.unsolvedwa.domain.problem.dto.ProblemResponseDto;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import com.unsolvedwa.unsolvedwa.domain.problem.Problem;
-import com.unsolvedwa.unsolvedwa.domain.problem.dto.ProblemResponseDto;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
-import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 
 
 @Service("problemTeamService")
@@ -22,9 +15,9 @@ public class ProblemTeamService {
   private final ProblemTeamRepository problemTeamRepository;
   
   @Transactional(readOnly = true)
-  public Optional<ProblemResponseDto> findUnsolvedRandomProblems(Long teamId, Long tier) {
+  public Optional<ProblemResponseDto> findUnsolvedRandomProblems(String teamName, Long tier) {
 	  
-	  return problemTeamRepository.findUnsolvedRandomProblems(teamId, tier);
+	  return problemTeamRepository.findUnsolvedRandomProblems(teamName, tier);
   }
 
 }
