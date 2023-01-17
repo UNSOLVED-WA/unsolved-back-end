@@ -1,6 +1,7 @@
 package com.unsolvedwa.unsolvedwa.domain.problem.dto;
 
 import com.querydsl.core.annotations.QueryProjection;
+import com.unsolvedwa.unsolvedwa.domain.problem.Problem;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -18,5 +19,12 @@ public class ProblemResponseDto {
     this.problemNumber = problemNumber;
     this.problemTitle = problemTitle;
     this.tier = tier;
+  }
+
+  public ProblemResponseDto(Problem problem) {
+    this.problemId = problem.getId();
+    this.problemNumber = problem.getProblemNumber();
+    this.problemTitle = problem.getTitle();
+    this.tier = problem.getTier();
   }
 }
