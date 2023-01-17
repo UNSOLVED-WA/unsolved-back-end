@@ -2,6 +2,7 @@ package com.unsolvedwa.unsolvedwa.controller;
 
 import com.unsolvedwa.unsolvedwa.domain.team.Team;
 import com.unsolvedwa.unsolvedwa.domain.team.TeamService;
+import com.unsolvedwa.unsolvedwa.domain.team.dto.TeamResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -23,15 +24,17 @@ public class TeamController {
 
   @Operation(description = "팀조회")
   @GetMapping(value = "/{id}")
-  public ResponseEntity<Team> getTeam(@Parameter @PathVariable Long id) {
-    return ResponseEntity.ok(teamService.findByTeamId(id));
+  public ResponseEntity<TeamResponseDto> getTeam(@Parameter @PathVariable Long id) {
+    Team team = teamService.findByTeamId(id);
+    return ResponseEntity.ok(new TeamResponseDto(team));
   }
 
   @Operation(description = "팀 이름으로 팀 아이디 조회")
   @GetMapping(value = "/name/{teamName}")
-  public ResponseEntity<Team> getTeam(@Parameter @PathVariable String teamName) {
+  public ResponseEntity<TeamResponseDto> getTeam(@Parameter @PathVariable String teamName) {
     try {
-      return ResponseEntity.ok(teamService.findByTeamName(teamName));
+      Team team = teamService.findByTeamName(teamName);
+      return ResponseEntity.ok(new TeamResponseDto(team));
     }
     catch (NotFoundException e) {
       return ResponseEntity.notFound().build();
