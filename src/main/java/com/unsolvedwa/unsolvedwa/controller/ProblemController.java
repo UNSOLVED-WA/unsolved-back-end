@@ -33,10 +33,11 @@ public class ProblemController {
 
   @Operation(description = "문제조회")
   @GetMapping(value = "/{id}")
-  public ResponseEntity<Problem> getProblem(@Parameter @PathVariable Long id) {
+  public ResponseEntity<ProblemResponseDto> getProblem(@Parameter @PathVariable Long id) {
     try
     {
-      return ResponseEntity.ok(problemService.findByProblemId(id));
+      Problem problem = problemService.findByProblemId(id);
+      return ResponseEntity.ok(new ProblemResponseDto(problem));
     }
     catch (NotFoundException e)
     {
