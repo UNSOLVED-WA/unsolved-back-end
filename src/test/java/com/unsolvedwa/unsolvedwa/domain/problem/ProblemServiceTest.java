@@ -56,12 +56,14 @@ public class ProblemServiceTest {
   RankingRepository rankingRepository;
 
   Long teamId;
+  String teamName;
   Long tier;
   Optional<Team> optionalTeam;
 
   @BeforeEach
   void beforeEach() throws Exception {
     this.teamId = 1L;
+    this.teamName = "teamName";
     this.tier = 1L;
   }
 
@@ -269,8 +271,9 @@ public class ProblemServiceTest {
         tier = 1L;
 
         this.team = new Team("teamName");
+        team.setIdForTest(teamId);
         optionalTeam = Optional.of(team);
-        doReturn(optionalTeam).when(teamRepository).findById(teamId);
+        doReturn(optionalTeam).when(teamRepository).findByName(teamName);
       }
 
       @Test
@@ -285,7 +288,7 @@ public class ProblemServiceTest {
 
         //when
         doReturn(unsolvedProblemResponseDtoList).when(problemRepository).findUnsolvedProblemsByTeamAndTier(teamId, tier);
-        List<ProblemResponseDto> responseDtoList = problemService.findUnsolvedProblemsByTeamAndTier(teamId, tier);
+        List<ProblemResponseDto> responseDtoList = problemService.findUnsolvedProblemsByTeamAndTier(teamName, tier);
 
         // then
         Assertions.assertThat(responseDtoList).hasSize(10);
@@ -306,7 +309,7 @@ public class ProblemServiceTest {
 
         //when
         doReturn(unsolvedProblemResponseDtoList).when(problemRepository).findUnsolvedProblemsByTeamAndTier(teamId, tier);
-        List<ProblemResponseDto> responseDtoList = problemService.findUnsolvedProblemsByTeamAndTier(teamId, tier);
+        List<ProblemResponseDto> responseDtoList = problemService.findUnsolvedProblemsByTeamAndTier(teamName, tier);
 
         // then
         Assertions.assertThat(responseDtoList).isEmpty();
@@ -319,7 +322,7 @@ public class ProblemServiceTest {
       @BeforeEach
       void beforeEach() throws Exception {
         optionalTeam = Optional.empty();
-        doReturn(optionalTeam).when(teamRepository).findById(teamId);
+        doReturn(optionalTeam).when(teamRepository).findByName(teamName);
       }
 
       @Test
@@ -328,7 +331,7 @@ public class ProblemServiceTest {
         //when
         // then
         assertThrows(NotFoundException.class, ()->{
-          problemService.findUnsolvedProblemsByTeamAndTier(teamId, tier);
+          problemService.findUnsolvedProblemsByTeamAndTier(teamName, tier);
         });
       }
     }

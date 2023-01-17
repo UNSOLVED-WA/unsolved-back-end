@@ -39,4 +39,8 @@ public class Team extends BaseTimeEntity {
   public Team(String name) {
     this.name = name;
   }
+
+  public void setIdForTest(Long id) {
+    this.id = id;
+  }
 }

@@ -33,10 +33,11 @@ public class ProblemController {
 
   @Operation(description = "문제조회")
   @GetMapping(value = "/{id}")
-  public ResponseEntity<Problem> getProblem(@Parameter @PathVariable Long id) {
+  public ResponseEntity<ProblemResponseDto> getProblem(@Parameter @PathVariable Long id) {
     try
     {
-      return ResponseEntity.ok(problemService.findByProblemId(id));
+      Problem problem = problemService.findByProblemId(id);
+      return ResponseEntity.ok(new ProblemResponseDto(problem));
     }
     catch (NotFoundException e)
     {
@@ -45,10 +46,10 @@ public class ProblemController {
   }
 
   @Operation(description = "특정 팀, 특정 티어의 unsolved problem 1개 랜덤으로 조회")
-  @GetMapping(value = "/unsolved/random/{teamId}/{tier}")
-  public ResponseEntity<ProblemResponseDto> getUnsolvedProblems(@Parameter @PathVariable Long teamId,
+  @GetMapping(value = "/unsolved/random/{teamName}/{tier}")
+  public ResponseEntity<ProblemResponseDto> getUnsolvedProblems(@Parameter @PathVariable String teamName,
       @Parameter @PathVariable Long tier) {
-	  Optional<ProblemResponseDto> result = problemTeamService.findUnsolvedRandomProblems(teamId, tier);
+	  Optional<ProblemResponseDto> result = problemTeamService.findUnsolvedRandomProblems(teamName, tier);
 	  if (result.isEmpty())
 		  return ResponseEntity.noContent().build();
 	  return ResponseEntity.ok(result.get());
@@ -57,11 +58,11 @@ public class ProblemController {
   }
 
   @Operation(description = "특정 팀, 특정 티어의 unsolved problem 모두 리스트로 조회")
-  @GetMapping(value = "/unsolved/{teamId}/{tier}")
-  public ResponseEntity<List<ProblemResponseDto>> getUnsolvedProblemsByTeamAndTier(@Parameter @PathVariable Long teamId, @Parameter @PathVariable Long tier){
+  @GetMapping(value = "/unsolved/{teamName}/{tier}")
+  public ResponseEntity<List<ProblemResponseDto>> getUnsolvedProblemsByTeamAndTier(@Parameter @PathVariable String teamName, @Parameter @PathVariable Long tier){
     try
     {
-      return ResponseEntity.ok(problemService.findUnsolvedProblemsByTeamAndTier(teamId, tier));
+      return ResponseEntity.ok(problemService.findUnsolvedProblemsByTeamAndTier(teamName, tier));
     }
     catch (NotFoundException e)
     {

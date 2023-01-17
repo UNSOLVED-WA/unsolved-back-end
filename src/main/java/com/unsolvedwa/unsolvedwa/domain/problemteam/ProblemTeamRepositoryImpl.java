@@ -19,7 +19,7 @@ public class ProblemTeamRepositoryImpl implements ProblemTeamRepositoryCustom {
 	private final JPAQueryFactory queryFactory;
 
     @Override
-    public Optional<ProblemResponseDto> findUnsolvedRandomProblems(Long teamId, Long tier) {
+    public Optional<ProblemResponseDto> findUnsolvedRandomProblems(String teamName, Long tier) {
     	
     	Random random = new Random(System.currentTimeMillis());
     	List<Long> count;
@@ -30,7 +30,7 @@ public class ProblemTeamRepositoryImpl implements ProblemTeamRepositoryCustom {
     		        .select(problem.id.count())
     		        .from(problem)
     		        .leftJoin(problem.problemTeams, problemTeam)
-    		        .on(problemTeam.team.id.eq(teamId))
+    		        .on(problemTeam.team.name.eq(teamName))
     		        .where(problemTeam.id.isNull().and(problem.tier.eq(tier)))
     		        .fetch();
     	
@@ -40,7 +40,7 @@ public class ProblemTeamRepositoryImpl implements ProblemTeamRepositoryCustom {
     				.select(new QProblemResponseDto(problem.id, problem.problemNumber, problem.title, problem.tier))
     			    .from(problem)
     			    .leftJoin(problem.problemTeams, problemTeam)
-    			    .on(problemTeam.team.id.eq(teamId))
+    			    .on(problemTeam.team.name.eq(teamName))
     			    .where(problemTeam.id.isNull().and(problem.tier.eq(tier)))
     			    .limit(1)
     			    .offset(randomNum)

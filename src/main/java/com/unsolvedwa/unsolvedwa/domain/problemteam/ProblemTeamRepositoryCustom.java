@@ -7,6 +7,6 @@ import com.unsolvedwa.unsolvedwa.domain.problem.dto.ProblemResponseDto;
 
 public interface ProblemTeamRepositoryCustom {
  
-  public Optional<ProblemResponseDto> findUnsolvedRandomProblems(Long teamId, Long tier);
+  public Optional<ProblemResponseDto> findUnsolvedRandomProblems(String teamName, Long tier);
 
 }
