@@ -1,7 +1,11 @@
 package com.unsolvedwa.unsolvedwa.domain.team.dto;
 
 import com.unsolvedwa.unsolvedwa.domain.team.Team;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+@Getter
+@NoArgsConstructor
 public class TeamResponseDto {
   private Long teamId;
   private String teamName;

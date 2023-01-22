@@ -7,6 +7,9 @@ import com.unsolvedwa.unsolvedwa.domain.ranking.dto.MonthRankingRequestDto;
 import com.unsolvedwa.unsolvedwa.domain.ranking.dto.MonthRankingResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -24,15 +27,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class RankingController {
 
   private final RankingService rankingService;
-
-/*  @Operation(description = "전체기간랭킹")
-  @GetMapping(value = "/{teamId}")
-  public ResponseEntity<List<Ranking>> getRanking(@Parameter @PathVariable Long teamId) {
-    //TODO: service 구현하여 작성
-    return ResponseEntity.ok(rankingService.findById());
-  }*/
-
-  @Operation(description = "전체랭킹")
+  
+  @Operation(description = "전체 기간 랭킹 조회")
+  @ApiResponse(responseCode = "200", description = "조회 성공", content = @Content(schema = @Schema(implementation = AllRankingResponseDto.class)))
   @GetMapping(value = "/{group_id}")
   public ResponseEntity<List<AllRankingResponseDto>> getRanking(@Parameter @PathVariable Long teamId) {
     try
@@ -45,7 +42,8 @@ public class RankingController {
     }
   }
 
-  @Operation(description = "월간랭킹")
+  @Operation(description = "월간 랭킹 조회")
+  @ApiResponse(responseCode = "200", description = "조회 성공", content = @Content(schema = @Schema(implementation = MonthRankingResponseDto.class)))
   @GetMapping(value = "/month/{teamId}")
   public ResponseEntity<List<MonthRankingResponseDto>> getMonthRanking(@Parameter @PathVariable Long teamId) {
     MonthRankingRequestDto monthRankingRequestDto = new MonthRankingRequestDto(teamId);
@@ -59,7 +57,8 @@ public class RankingController {
     }
   }
 
-  @Operation(description = "월간랭킹 기록 조회")
+  @Operation(description = "특정 유저의 월간 랭킹 기록 조회")
+  @ApiResponse(responseCode = "200", description = "조회 성공", content = @Content(schema = @Schema(implementation = MonthRankingHistoryResponseDto.class)))
   @GetMapping(value = "/month/history/{teamId}/{userId}")
   public ResponseEntity<List<MonthRankingHistoryResponseDto>> getMonthRanking(@Parameter @PathVariable Long teamId, @Parameter @PathVariable Long userId) {
     try
