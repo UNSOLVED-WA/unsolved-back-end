@@ -19,8 +19,8 @@ services:
       - network_1
 
   application:
-    build: .
-    restart: always
+    image: unsolvedwa/backend-api:latest
+    container_name: unsolvedwa-backend-api
     depends_on:
       - database
     ports:
