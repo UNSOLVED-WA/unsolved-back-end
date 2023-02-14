@@ -19,5 +19,4 @@ public class ProblemTeamService {
 	  
 	  return problemTeamRepository.findUnsolvedRandomProblems(teamName, tier);
   }
-
 }
