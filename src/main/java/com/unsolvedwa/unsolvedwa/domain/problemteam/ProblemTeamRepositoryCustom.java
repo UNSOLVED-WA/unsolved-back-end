@@ -1,12 +1,12 @@
 package com.unsolvedwa.unsolvedwa.domain.problemteam;
 
-import java.util.Optional;
-
-
 import com.unsolvedwa.unsolvedwa.domain.problem.dto.ProblemResponseDto;
+import java.util.List;
+import java.util.Optional;
 
 public interface ProblemTeamRepositoryCustom {
  
   public Optional<ProblemResponseDto> findUnsolvedRandomProblems(String teamName, Long tier);
-
+  public List<Long> findAllProblemNumberByTeamOrderById(Long teamId);
+  public List<Long> findAllIdByTeamAndUser(Long teamId, Long userId);
 }
