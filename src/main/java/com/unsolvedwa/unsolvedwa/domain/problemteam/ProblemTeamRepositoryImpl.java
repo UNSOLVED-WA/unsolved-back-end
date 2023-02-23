@@ -15,7 +15,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ProblemTeamRepositoryImpl implements ProblemTeamRepositoryCustom {
 
-
 	private final JPAQueryFactory queryFactory;
 
     @Override
@@ -50,4 +49,20 @@ public class ProblemTeamRepositoryImpl implements ProblemTeamRepositoryCustom {
       	return result;
     }
 
+	@Override
+	public List<Long> findAllProblemNumberByTeamOrderById(Long teamId) {
+		return queryFactory.select(problemTeam.problem.problemNumber)
+			.from(problemTeam)
+			.where(problemTeam.team.id.eq(teamId))
+			.orderBy(problemTeam.problem.id.asc())
+			.fetch();
+	}
+
+	public List<Long> findAllIdByTeamAndUser(Long teamId, Long userId) {
+		return queryFactory.select(problemTeam.id)
+			.from(problemTeam)
+			.where(problemTeam.team.id.eq(teamId).and(problemTeam.user.id.eq(userId)))
+			.orderBy(problemTeam.problem.id.asc())
+			.fetch();
+	}
 }
