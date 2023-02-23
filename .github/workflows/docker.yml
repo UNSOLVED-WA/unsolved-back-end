@@ -6,7 +6,7 @@ on:
 
 jobs:
   docker:
-    name: Deploy Docker Image
+    name: Deploy Docker Hub
     runs-on: ubuntu-latest
     env:
       REPO: ${{ secrets.DOCKER_REPO }}
