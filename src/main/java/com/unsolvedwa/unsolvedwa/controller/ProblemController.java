@@ -62,6 +62,22 @@ public class ProblemController {
     
   }
 
+  @Operation(description = "특정 팀의 unsolved problem 1개 랜덤으로 조회")
+  @ApiResponse(responseCode = "200", description = "조회 성공", content = @Content(schema = @Schema(implementation = ProblemResponseDto.class)))
+  @GetMapping(value = "/unsolved/random/{teamName}")
+  public ResponseEntity<ProblemResponseDto> getRandomUnsolvedProblem(@Parameter @PathVariable String teamName) {
+    Optional<ProblemResponseDto> result;
+    try {
+       result = problemTeamService.findRandomUnsolvedProblem(teamName);
+    }
+    catch (Exception exception) {
+      return ResponseEntity.notFound().build();
+    }
+    if (result.isEmpty())
+      return ResponseEntity.noContent().build();
+    return ResponseEntity.ok(result.get());
+  }
+
   @Operation(description = "특정 팀, 특정 티어의 unsolved problem 모두 리스트로 조회")
   @ApiResponse(responseCode = "200", description = "조회 성공", content = @Content(schema = @Schema(implementation = ProblemResponseDto.class)))
   @GetMapping(value = "/unsolved/{teamName}/{tier}")

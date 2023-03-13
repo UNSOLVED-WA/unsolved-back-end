@@ -7,6 +7,7 @@ import java.util.Optional;
 public interface ProblemTeamRepositoryCustom {
  
   public Optional<ProblemResponseDto> findUnsolvedRandomProblems(String teamName, Long tier);
+  public Optional<ProblemResponseDto> findUnsolvedRandomProblem(String teamName);
   public List<Long> findAllProblemNumberByTeamOrderById(Long teamId);
   public List<Long> findAllIdByTeamAndUser(Long teamId, Long userId);
 }
