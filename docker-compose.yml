@@ -31,9 +31,14 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:mysql://database:3306/${DB_NAME}?useSSL=false&allowPublicKeyRetrieval=true
       - SPRING_DATASOURCE_USERNAME=root
       - SPRING_DATASOURCE_PASSWORD=${DB_PASSWORD}
-      - spring.config.additional-location=file:///application.yaml
     networks:
       - network_1
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+        reservations:
+          memory: 128M
 
 networks:
   network_1:
