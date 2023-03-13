@@ -33,6 +33,12 @@ services:
       - SPRING_DATASOURCE_PASSWORD=${DB_PASSWORD}
     networks:
       - network_1
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+        reservations:
+          memory: 128M
 
 networks:
   network_1:
