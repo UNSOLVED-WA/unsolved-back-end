@@ -39,6 +39,6 @@ jobs:
         password: ${{ secrets.DOCKER_PASSWORD }}
     - name: Publish Docker Image
       run: |
-        docker push $REPO
-        docker tag $REPO $REPO:${{ env.VERSION }}
         docker push $REPO:${{ env.VERSION }}
+        docker tag $REPO:${{ env.VERSION }} $REPO
+        docker push $REPO
